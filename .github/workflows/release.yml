@@ -37,13 +37,33 @@ jobs:
           git fetch --tags --force
           git checkout "$RELEASE_TAG"
 
+      - name: Version gate
+        id: version-gate
+        run: |
+          set -euo pipefail
+          VERSION="${RELEASE_TAG#v}"
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$VERSION" != "$PACKAGE_VERSION" ]; then
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            echo "reason=version-mismatch" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if gh api "repos/Co-Kyo/sp-skill/releases/tags/${RELEASE_TAG}" >/dev/null 2>&1; then
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            echo "reason=release-exists" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "should_release=true" >> "$GITHUB_OUTPUT"
+
       - name: Install and build
+        if: steps.version-gate.outputs.should_release == 'true'
         run: |
           npm ci
           npm run typecheck
           npm run build
 
       - name: Assemble Markdown skill release
+        if: steps.version-gate.outputs.should_release == 'true'
         run: |
           set -euo pipefail
           rm -rf release/sp-skill
@@ -58,10 +78,12 @@ jobs:
           python3 -m zipfile -c "../sp-skill-${RELEASE_TAG}.zip" .
 
       - name: Pack source
+        if: steps.version-gate.outputs.should_release == 'true'
         run: |
           git archive --format=zip -o release/source.zip "$RELEASE_TAG"
 
       - name: Create GitHub Release
+        if: steps.version-gate.outputs.should_release == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
