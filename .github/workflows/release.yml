@@ -1,0 +1,69 @@
+name: Release sp-skill
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, for example v1.0.0"
+        required: false
+        default: "v1.0.0"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Resolve release tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "RELEASE_TAG=${{ inputs.tag }}" >> "$GITHUB_ENV"
+          else
+            echo "RELEASE_TAG=${GITHUB_REF_NAME}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Checkout release ref
+        run: |
+          git fetch --tags --force
+          git checkout "$RELEASE_TAG"
+
+      - name: Install and build
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build
+
+      - name: Assemble Markdown skill release
+        run: |
+          set -euo pipefail
+          mkdir -p release/sp-skill
+          cp -R dist/sp-skill/. release/sp-skill/
+          cp -R assets/. release/sp-skill/assets/
+          cp -R plugins/. release/sp-skill/plugins/
+          cp LICENSE release/sp-skill/LICENSE
+          cp VERSION_LINEAGE.json release/sp-skill/VERSION_LINEAGE.json
+          cd release/sp-skill
+          python3 -m zipfile -c "../sp-skill-${RELEASE_TAG}.zip" .
+
+      - name: Pack source
+        run: |
+          git archive --format=zip -o release/source.zip "$RELEASE_TAG"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          files: |
+            release/source.zip
+            release/sp-skill-*.zip
+          generate_release_notes: true

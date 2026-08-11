@@ -1,0 +1,9 @@
+node_modules/
+dist/
+release/
+*.zip
+*.tgz
+*.tsbuildinfo
+.DS_Store
+.idea/
+.vscode/

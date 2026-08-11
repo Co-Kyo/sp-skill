@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 900" font-family="Microsoft YaHei, PingFang SC, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16A34A"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EA580C"/>
+    </marker>
+    <linearGradient id="grad-purple" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="grad-teal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#14B8A6;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#0D9488;stop-opacity:1"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="1" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <filter id="shadow-lg" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="2" dy="3" stdDeviation="5" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <rect width="820" height="900" fill="#F8FAFC" rx="8"/>
+
+  <text x="410" y="42" text-anchor="middle" font-size="20" font-weight="bold" fill="#1E293B">Step ① · 头脑风暴 — 架构流程图</text>
+  <line x1="100" y1="55" x2="720" y2="55" stroke="#CBD5E1" stroke-width="1"/>
+
+  <!-- ===== INPUT ===== -->
+  <rect x="260" y="75" width="300" height="42" rx="21" fill="url(#grad-teal)" filter="url(#shadow)"/>
+  <text x="410" y="101" text-anchor="middle" font-size="13" fill="white" font-weight="bold">📥 anchors.json（Step ⓪ 产出）</text>
+  <line x1="410" y1="117" x2="410" y2="145" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ===== ① SPAWN 4 AGENTS ===== -->
+  <rect x="180" y="145" width="460" height="45" rx="6" fill="white" stroke="#F97316" stroke-width="2" filter="url(#shadow)"/>
+  <text x="410" y="172" text-anchor="middle" font-size="13" font-weight="bold" fill="#C2410C">① 定义 4 个 Agent → 并行 spawn</text>
+  <text x="410" y="186" text-anchor="middle" font-size="9.5" fill="#64748B">主 agent 只分发路径，sub-agent 自己读取文件和骨架</text>
+  <line x1="410" y1="190" x2="410" y2="220" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ===== 4 AGENTS CONTAINER ===== -->
+  <rect x="30" y="220" width="760" height="150" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="5,3" filter="url(#shadow)"/>
+  <text x="410" y="242" text-anchor="middle" font-size="11" font-weight="bold" fill="#1E40AF">② 4 个维度 Agent 并行工作（W=4 · 超时 3min · 轮询 15s）</text>
+
+  <rect x="55" y="260" width="170" height="80" rx="6" fill="white" stroke="#3B82F6" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="55" y="260" width="170" height="22" rx="6" fill="#DBEAFE"/>
+  <text x="140" y="276" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1E40AF">场景 Agent</text>
+  <text x="140" y="296" text-anchor="middle" font-size="9" fill="#475569">读 scenario-agent.md</text>
+  <text x="140" y="310" text-anchor="middle" font-size="9" fill="#475569">+ anchors.json</text>
+  <text x="140" y="328" text-anchor="middle" font-size="8.5" fill="#64748B">→ scenario.json</text>
+
+  <rect x="230" y="260" width="170" height="80" rx="6" fill="white" stroke="#8B5CF6" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="230" y="260" width="170" height="22" rx="6" fill="#EDE9FE"/>
+  <text x="315" y="276" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#6D28D9">技术 Agent</text>
+  <text x="315" y="296" text-anchor="middle" font-size="9" fill="#475569">读 technical-agent.md</text>
+  <text x="315" y="310" text-anchor="middle" font-size="9" fill="#475569">+ anchors.json</text>
+  <text x="315" y="328" text-anchor="middle" font-size="8.5" fill="#64748B">→ technical.json</text>
+
+  <rect x="405" y="260" width="170" height="80" rx="6" fill="white" stroke="#14B8A6" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="405" y="260" width="170" height="22" rx="6" fill="#CCFBF1"/>
+  <text x="490" y="276" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#0F766E">学习 Agent</text>
+  <text x="490" y="296" text-anchor="middle" font-size="9" fill="#475569">读 learning-agent.md</text>
+  <text x="490" y="310" text-anchor="middle" font-size="9" fill="#475569">+ anchors.json</text>
+  <text x="490" y="328" text-anchor="middle" font-size="8.5" fill="#64748B">→ learning.json</text>
+
+  <rect x="580" y="260" width="170" height="80" rx="6" fill="white" stroke="#EF4444" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="580" y="260" width="170" height="22" rx="6" fill="#FEE2E2"/>
+  <text x="665" y="276" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#B91C1C">约束 Agent</text>
+  <text x="665" y="296" text-anchor="middle" font-size="9" fill="#475569">读 constraint-agent.md</text>
+  <text x="665" y="310" text-anchor="middle" font-size="9" fill="#475569">+ anchors.json</text>
+  <text x="665" y="328" text-anchor="middle" font-size="8.5" fill="#64748B">→ constraint.json</text>
+
+  <line x1="410" y1="370" x2="410" y2="400" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ===== ③ BARRIER CHECK ===== -->
+  <rect x="140" y="400" width="540" height="50" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2.5" filter="url(#shadow-lg)"/>
+  <text x="410" y="420" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400E">🛑 ③ Barrier 检查（强制停顿 · 不可跳过）</text>
+  <text x="410" y="438" text-anchor="middle" font-size="10" fill="#B45309">4 维度完整性校验 → 决策矩阵 → 写入 barrier-1.md</text>
+  <line x1="410" y1="450" x2="410" y2="480" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ===== DECISION DIAMOND ===== -->
+  <polygon points="410,480 540,540 410,600 280,540" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2" filter="url(#shadow)"/>
+  <text x="410" y="536" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400E">完成度?</text>
+  <text x="410" y="552" text-anchor="middle" font-size="9" fill="#B45309">4/4 · 3/4 · ≤2/4</text>
+
+  <!-- Missing branch (left) -->
+  <line x1="280" y1="540" x2="140" y2="540" stroke="#DC2626" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+  <text x="200" y="532" font-size="9" fill="#DC2626" font-weight="bold">&lt;4/4</text>
+  <rect x="30" y="520" width="110" height="40" rx="6" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="85" y="538" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#B91C1C">停住 → 用户决策</text>
+  <text x="85" y="554" text-anchor="middle" font-size="8.5" fill="#991B1B">重试(≤2次) / 降级</text>
+
+  <!-- Loop back -->
+  <line x1="85" y1="560" x2="85" y2="610" stroke="#DC2626" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="85" y1="610" x2="280" y2="610" stroke="#EA580C" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="280" y1="610" x2="280" y2="190" stroke="#EA580C" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-orange)"/>
+  <text x="275" y="400" text-anchor="end" font-size="8" fill="#C2410C">重试→重新 spawn</text>
+
+  <!-- All complete branch (down) -->
+  <line x1="410" y1="600" x2="410" y2="640" stroke="#16A34A" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <text x="420" y="624" font-size="9.5" fill="#16A34A" font-weight="bold">4/4 完成</text>
+
+  <!-- ===== ④ CONVERGENCE AGENT ===== -->
+  <rect x="180" y="640" width="460" height="70" rx="6" fill="white" stroke="#8B5CF6" stroke-width="2" filter="url(#shadow-lg)"/>
+  <rect x="180" y="640" width="460" height="26" rx="6" fill="url(#grad-purple)"/>
+  <text x="410" y="658" text-anchor="middle" font-size="12" font-weight="bold" fill="white">④ 收敛者 Agent（brainstorm-integrator）</text>
+  <text x="410" y="678" text-anchor="middle" font-size="10" fill="#64748B">读取 4 份维度报告 + anchors.json → 校验 → 对齐 → 收束 → 去重 → 补位 → 图谱构建</text>
+  <text x="410" y="698" text-anchor="middle" font-size="8.5" fill="#94A3B8">超时 5min · 失败触发降级协议（骨架+存活维度重建）</text>
+  <line x1="410" y1="710" x2="410" y2="740" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ===== ⑤ WRITE OUTPUT ===== -->
+  <rect x="225" y="740" width="370" height="45" rx="6" fill="white" stroke="#14B8A6" stroke-width="2" filter="url(#shadow)"/>
+  <text x="410" y="760" text-anchor="middle" font-size="12" font-weight="bold" fill="#0F766E">⑤ 写入 requirement-web.json</text>
+  <text x="410" y="776" text-anchor="middle" font-size="9.5" fill="#64748B">{workDir}/.meta/requirement-web.json</text>
+  <line x1="410" y1="785" x2="410" y2="815" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ===== ⑥ INJECT TO STEP ② ===== -->
+  <rect x="265" y="815" width="290" height="35" rx="17" fill="url(#grad-teal)" filter="url(#shadow)"/>
+  <text x="410" y="838" text-anchor="middle" font-size="11.5" font-weight="bold" fill="white">⑥ 注入 Step ② 扫描</text>
+
+  <!-- ===== RIGHT: KEY FILES ===== -->
+  <rect x="640" y="75" width="165" height="90" rx="6" fill="white" stroke="#E2E8F0" stroke-width="1" filter="url(#shadow)"/>
+  <text x="650" y="93" font-size="10" font-weight="bold" fill="#334155">📋 主 agent 读取</text>
+  <text x="650" y="110" font-size="8.5" fill="#64748B">agent-init.md</text>
+  <text x="650" y="124" font-size="8.5" fill="#64748B">scheduling-detail.md</text>
+  <text x="650" y="138" font-size="8.5" fill="#64748B">barrier-check.md</text>
+  <text x="650" y="152" font-size="8.5" fill="#64748B">fallback-protocol.md</text>
+  <text x="650" y="162" font-size="7.5" fill="#94A3B8">不读 anchors.json</text>
+
+  <!-- ===== RIGHT: SUB-AGENT FILES ===== -->
+  <rect x="640" y="190" width="165" height="85" rx="6" fill="white" stroke="#E2E8F0" stroke-width="1" filter="url(#shadow)"/>
+  <text x="650" y="208" font-size="10" font-weight="bold" fill="#334155">📖 Sub-agent 读取</text>
+  <text x="650" y="225" font-size="8.5" fill="#64748B">*-agent.md ×4</text>
+  <text x="650" y="239" font-size="8.5" fill="#64748B">anchors.json</text>
+  <text x="650" y="253" font-size="8.5" fill="#64748B">year-granularity.md</text>
+  <text x="650" y="267" font-size="8.5" fill="#64748B">schemas.md§N</text>
+
+  <!-- ===== RIGHT: TIMEOUT ===== -->
+  <rect x="640" y="290" width="165" height="75" rx="6" fill="white" stroke="#E2E8F0" stroke-width="1" filter="url(#shadow)"/>
+  <text x="650" y="308" font-size="10" font-weight="bold" fill="#334155">⏱ 超时</text>
+  <text x="650" y="325" font-size="8.5" fill="#64748B">维度 Agent: 3 min</text>
+  <text x="650" y="339" font-size="8.5" fill="#64748B">收敛者: 5 min</text>
+  <text x="650" y="353" font-size="8.5" fill="#64748B">轮询: 15s · 补发: 1次</text>
+
+  <!-- ===== RIGHT: DOWNGRADE ===== -->
+  <rect x="640" y="660" width="165" height="55" rx="6" fill="#FFF7ED" stroke="#EA580C" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="722" y="678" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#C2410C">⚠️ 降级协议</text>
+  <text x="722" y="694" text-anchor="middle" font-size="8" fill="#9A3412">收敛者失败时触发</text>
+  <text x="722" y="708" text-anchor="middle" font-size="8" fill="#9A3412">骨架+存活维度重建</text>
+</svg>

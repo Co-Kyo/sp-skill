@@ -1,0 +1,19 @@
+{
+  "name": "@co-kyo/sp-skill-source",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsx node_modules/@co-kyo/skillpack/dist/bin/cli.js build skillpack.config.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@co-kyo/skillpack": "^0.1.0",
+    "@co-kyo/skillpack-types": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "tsx": "^4.16.0",
+    "typescript": "^5.5.0"
+  }
+}
