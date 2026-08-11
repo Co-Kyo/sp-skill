@@ -46,8 +46,10 @@ jobs:
       - name: Assemble Markdown skill release
         run: |
           set -euo pipefail
+          rm -rf release/sp-skill
           mkdir -p release/sp-skill
-          cp -R dist/sp-skill/. release/sp-skill/
+          cp dist/sp-skill/SKILL.md release/sp-skill/SKILL.md
+          cp -R dist/sp-skill/processes release/sp-skill/processes
           cp -R assets/. release/sp-skill/assets/
           cp -R plugins/. release/sp-skill/plugins/
           cp LICENSE release/sp-skill/LICENSE
