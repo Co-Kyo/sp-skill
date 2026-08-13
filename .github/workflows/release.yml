@@ -77,6 +77,34 @@ jobs:
           cd release/sp-skill
           python3 -m zipfile -c "../sp-skill-${RELEASE_TAG}.zip" .
 
+      - name: Update release branch
+        if: steps.version-gate.outputs.should_release == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -rf /tmp/sp-skill-release
+          git worktree add --detach /tmp/sp-skill-release HEAD
+          cd /tmp/sp-skill-release
+          git branch -D release 2>/dev/null || true
+          git checkout --orphan release
+          git rm -rf .
+          cp -R "$GITHUB_WORKSPACE/release/sp-skill/." .
+          cat > README.md <<'EOF'
+          # sp-skill release
+
+          This branch contains the generated, importable Markdown version of sp-skill.
+
+          - `SKILL.md` is the skill entry point.
+          - `processes/` contains the step Markdown files.
+          - The source repository lives on `main`.
+          EOF
+          git add .
+          git commit -m "chore: publish sp-skill ${RELEASE_TAG}"
+          git push --force origin release
+          cd "$GITHUB_WORKSPACE"
+          git worktree remove --force /tmp/sp-skill-release
+
       - name: Pack source
         if: steps.version-gate.outputs.should_release == 'true'
         run: |
