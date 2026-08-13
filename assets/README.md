@@ -28,10 +28,6 @@ assets/
 │   ├── barrier-check.md        ← Barrier 检查项 + 决策矩阵
 │   ├── scheduling-detail.md    ← 调度参数 + 超时 + 降级
 │   ├── fallback-protocol.md    ← 收敛者失败降级协议
-│   ├── architecture.svg        ← 架构流程图（完整）
-│   ├── architecture-orchestration.svg ← 主 agent 编排流程
-│   ├── architecture-dataflow.svg      ← Sub-agent 数据流
-│   └── architecture-file-deps.svg     ← 文件依赖图
 ├── 02-partition/
 │   └── schemas.md              ← partition-analysis.json 格式
 ├── 03-scan/
@@ -72,6 +68,8 @@ assets/
 - **schemas.md**：定义该步骤的输出数据格式（JSON Schema）
 - **method.md**：定义该步骤的核心方法论和算法
 - **common/*.md**：跨步骤共享的公共资源（约定、域名表、路径）
+
+步骤架构图已迁移到 `docs/architecture/<step>/`，不属于运行时 assets。
 
 ## 设计原则
 
