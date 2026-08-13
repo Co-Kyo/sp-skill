@@ -89,7 +89,7 @@ jobs:
           git branch -D release 2>/dev/null || true
           git checkout --orphan release
           git rm -rf .
-          cp -R "$GITHUB_WORKSPACE/release/sp-skill/." .
+          find "$GITHUB_WORKSPACE/release/sp-skill" -mindepth 1 -maxdepth 1 -exec cp -R {} . \;
           cat > README.md <<'EOF'
           # sp-skill release
 

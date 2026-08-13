@@ -14,7 +14,8 @@ sp-skill 开发源码仓库。
 │   ├── actions.ts
 │   └── verify.ts
 ├── assets/                  # Markdown 运行资产
-└── plugins/                 # 插件片段
+├── plugins/                 # 插件片段
+└── docs/architecture/       # 每步骤架构 SVG（仅文档，不进入 release）
 ```
 
 ## 本地构建
