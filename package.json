@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsx node_modules/@co-kyo/skillpack/dist/bin/cli.js build skillpack.config.ts",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "node --import tsx --test src/domain/ladder.test.ts src/domain/session.test.ts src/domain/effects.test.ts src/domain/learner.test.ts"
+    "test": "node --import tsx --test src/domain/ladder.test.ts src/domain/session.test.ts src/domain/effects.test.ts src/domain/learner.test.ts src/steps/flow.test.ts"
   },
   "dependencies": {
     "@co-kyo/skillpack": "^0.1.0",

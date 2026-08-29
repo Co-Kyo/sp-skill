@@ -1,6 +1,7 @@
 import type { SkillSourceModel } from '@co-kyo/skillpack-types';
 import { createSkillFromModel } from '@co-kyo/skillpack';
 import { contracts } from './src/contracts.js';
+import { TAIL_SESSION_FLOW } from './src/domain/session.js';
 import { policies } from './src/policies.js';
 import { steps } from './src/steps/index.js';
 
@@ -32,7 +33,7 @@ const model: SkillSourceModel = {
       { name: '头脑风暴', stepIds: ['brainstorm'], description: '条件触发，生成需求网' },
       { name: '依赖分区', stepIds: ['partition'], description: '拆分 session 与扫描批次' },
       { name: '前处理', stepIds: ['scan', 'capability-graph', 'evaluate-pool'], description: '串行扫描、建图、评估入池' },
-      { name: '后处理', stepIds: ['capability-research', 'briefing-assemble', 'assemble', 'learning-ladder'], description: '串行研究、Briefing、组装、学习阶梯' },
+      { name: '后处理', stepIds: [...TAIL_SESSION_FLOW], description: '串行研究、Briefing、组装、学习阶梯' },
     ],
     initStepId: 'initialize',
     flowOverview: `初始化 → 意图锚定 → 头脑风暴 → 依赖分区 → 前处理 → 后处理

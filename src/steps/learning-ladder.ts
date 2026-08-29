@@ -1,7 +1,14 @@
 import { step } from '@co-kyo/skillpack-types';
 import { doAction } from '../actions.js';
 import { effectContractSection } from '../domain/effects.js';
-import { ladderDetail, stepFormat, workerTask } from '../domain/ladder.js';
+import {
+  LADDER_JUDGMENT_FIELD,
+  LADDER_MAX_CAPABILITIES,
+  LADDER_STAGE_COUNT,
+  ladderDetail,
+  stepFormat,
+  workerTask,
+} from '../domain/ladder.js';
 import { nextStep, prevStep } from '../domain/session.js';
 import { refs } from '../contracts.js';
 import { barrier } from '../policies.js';
@@ -32,12 +39,12 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
   )
   .verify(
     verify.file('{workDir}/{seq}-{short_name}/learning-ladder.md', '学习阶梯文件存在'),
-    verify.count('阶段数 3-4'),
-    verify.field('做到才算过', '每步有二值验证标准'),
+    verify.count(`阶段数 ${LADDER_STAGE_COUNT.min}-${LADDER_STAGE_COUNT.max}`),
+    verify.field(LADDER_JUDGMENT_FIELD, '每步有二值验证标准'),
   )
   .onFail(
     fail.degrade('能力依赖图有环', '打断循环依赖并标记 warning'),
-    fail.degrade('能力数量超过 8', '合并相似能力减少阶段数'),
+    fail.degrade(`能力数量超过 ${LADDER_MAX_CAPABILITIES}`, '合并相似能力减少阶段数'),
   )
   .checkpoint(
     barrier(
