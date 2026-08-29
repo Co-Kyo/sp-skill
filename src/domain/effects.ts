@@ -3,6 +3,9 @@
 // Phase I 的信号落盘(judgment/stuck/time 记录)在此扩展,并按登记差异渲染。
 // owns = 违约时应修改的源码位置(指向语义的现居地:领域模块 + 对应 schema 资产);
 // 路径存在性由 effects.test.ts 校验。渲染层接线(消费方)属 Phase I 登记项。
+// 数值类保证一律从领域常量派生(数据核验 A 项修正:不留硬编码字面量)。
+import { LADDER_STAGE_COUNT } from './ladder.js';
+
 export interface EffectContract {
   id: string;
   artifact: string;
@@ -17,7 +20,7 @@ export const EFFECT_CONTRACTS: readonly EffectContract[] = [
     owns: ['src/domain/ladder.ts', 'assets/09-learning-ladder/schemas.md'],
     expects: [
       '每个阶梯 Step 有「做到才算过」二值验证标准',
-      '阶段数 3-4',
+      `阶段数 ${LADDER_STAGE_COUNT.min}-${LADDER_STAGE_COUNT.max}`,
       '失败时给出明确回退指引',
     ],
   },
