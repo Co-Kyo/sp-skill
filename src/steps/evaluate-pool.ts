@@ -1,5 +1,6 @@
 import { step } from '@co-kyo/skillpack-types';
 import { doAction } from '../actions.js';
+import * as evaluation from '../domain/content/evaluation.js';
 import { refs } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
@@ -12,22 +13,8 @@ export const evaluatePool = step('evaluate-pool', '评估入池')
   .writes(refs.evaluations, refs.readme, refs.candidates)
   .inputs('{workDir}/.meta/capability-graph.json', '{workDir}/.meta/dependency-graph.json')
   .outputs('{workDir}/.meta/evaluations.json', '{workDir}/README.md', '{workDir}/.meta/candidates.md')
-  .detail(`四维评分：
-
-- cross_stack_coupling：跨栈耦合
-- doc_vacuum：文档真空
-- experience_barrier：经验壁垒
-- topical_heat：时事热度
-
-每个维度 1-3 分，总分 12。
-
-防虚高：4 个维度均 >= 2 时必须重新审视并压低至少 1 分，除非有明确论据。`)
-  .section('年限阈值', `L1：通常不入池。
-L2：总分 >= 6。
-L3：总分 >= 5。
-L4：任一维度 >= 2 即入池。
-
-一票入池条件：多源讨论、明确 trade-off、新兴与既有体系碰撞。`)
+  .detail(evaluation.detail())
+  .section('年限阈值', evaluation.thresholdSection())
   .contractRefs(
     refs.capabilityGraph,
     refs.dependencyGraph,
@@ -37,17 +24,11 @@ L4：任一维度 >= 2 即入池。
   )
   .taskTemplate(
     '四维评分',
-    `对每个命题按四维矩阵打分。
-记录每个维度的 reasoning。
-检查防虚高规则。
-写入 evaluations.json。`,
+    evaluation.scoreTask(),
   )
   .taskTemplate(
     '入池归档',
-    `按年限阈值判定 priority。
-记录 priority_trace。
-评估 difficulty 和 recommended_order。
-生成 README.md 和 candidates.md。`,
+    evaluation.archiveTask(),
   )
   .verify(
     verify.file('{workDir}/README.md', '命题总览存在'),

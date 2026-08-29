@@ -1,6 +1,8 @@
 // 研究/Briefing/组装域的提示词 API。
 // 步骤定义不再内联散文,统一从此处按类型化函数获取;
 // Phase R 返回文本与流程版逐字一致(行为保持)。
+// Phase II:重复片段(RATIO_CLAUSE/SCENARIO_MINIMUM)收敛到 content/shared.ts。
+import { RATIO_CLAUSE, SCENARIO_MINIMUM } from './content/shared.js';
 
 export const research = {
   detail: () => `分组规则：
@@ -109,8 +111,8 @@ trade-offs 输出 2-3 种技术路线。
 
 references 按 Tier 排序去重。
 
-每个命题必须包含至少 3 个场景化输入、3 个边界、3 个验证点。
-内容比例：通用高地 <= 70%，场景化/特化内容 >= 30%。
+每个命题必须包含${SCENARIO_MINIMUM}
+${RATIO_CLAUSE}
 完成后写入 _assembly_ratio_trace.json，记录 generic_pct、scenario_pct 和各项计数。`,
   experimentAgent: () => `读取 Briefing。
 
@@ -123,8 +125,8 @@ README 必须包含运行方式、预期结果、成功判据、失败含义和�
 读取 Briefing。
 组装 overview、edge-cases、trade-offs、references。
 每个坑点必须包含筛选_trace。
-内容比例：通用高地 <= 70%，场景化/特化内容 >= 30%。
-至少 3 个场景化输入、3 个边界、3 个验证点。
+${RATIO_CLAUSE}
+${SCENARIO_MINIMUM}
 写入 _assembly_ratio_trace.json。`,
   experimentAgentTask: () => `你是 {proposition_name} 的实验组装专家。
 读取 Briefing。

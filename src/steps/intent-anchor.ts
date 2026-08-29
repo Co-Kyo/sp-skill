@@ -1,10 +1,11 @@
 import { step } from '@co-kyo/skillpack-types';
+import * as intent from '../domain/content/intent.js';
 import { refs } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
 export const intentAnchor = step('intent-anchor', '意图锚定')
-  .target('生成 8-15 个锚点并注入策略元数据')
+  .target(intent.target())
   .summary('解析用户指令，推断年限，生成共享骨架')
   .dependsOn('initialize')
   .reads(
@@ -20,25 +21,8 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
   .action('validate', 'intent-skip', '跳过判断', '判断是否跳过头脑风暴。')
   .action('generate', 'intent-anchor-write', '生成骨架', '生成锚点并注入 strategy 元数据。')
   .outputs('{workDir}/.meta/brainstorm/anchors.json')
-  .detail(`年限推断优先级：
-
-1. 显式参数 --year
-2. 显式数字，例如 3-5 年
-3. 隐式信号，例如 高级、架构师、面试准备
-4. 无信号默认 L2
-
-锚点生成要求：
-
-- 数量 8-15 个
-- 每个锚点包含 id、name、provisional_level、provisional_role、reasoning、description、type、tags
-- role 与 level 强制约束：core=target_level、premise=target_level-1、outlook=target_level+1`)
-  .section('跳过判断', `跳过头脑风暴需要同时满足：
-
-- topic 明确，tech_stack 都是具体工具/框架名
-- 年限推断置信度高
-- 无场景化拦截词，例如 面试、场景、分析、复杂
-
-否则进入 {{step:brainstorm}}。`)
+  .detail(intent.detail())
+  .section('跳过判断', intent.skipSection())
   .contractRefs(
     { path: 'assets/00-intent-anchor/schemas.md', description: 'anchors 格式' },
     refs.yearRules,
@@ -47,19 +31,16 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
   )
   .taskTemplate(
     '锚点生成',
-    `提取 8-15 个核心技术关键词。
-为每个关键词标注 provisional_level 和 provisional_role。
-从 strategy-level 注入 core_label、premise_label、outlook_label 和 ratios。
-写入 anchors.json。`,
+    intent.anchorTask(),
   )
   .verify(
-    verify.count('锚点数量为 8-15 个'),
+    verify.count(intent.countVerifyText()),
     verify.field('provisional_level', '每个锚点包含 provisional_level'),
     verify.field('provisional_role', '每个锚点包含 provisional_role'),
   )
   .onFail(
     fail.checkpoint('年限推断置信度低', '默认 L2，并在初始化 Barrier 请用户确认'),
-    fail.halt('锚点不足 8 个', '提示用户补充信息或降低核心锚点门槛'),
+    fail.halt(intent.insufficientAnchorsText(), '提示用户补充信息或降低核心锚点门槛'),
   )
   .checkpoint(
     barrier(
