@@ -1,5 +1,7 @@
 import { step } from '@co-kyo/skillpack-types';
 import { doAction } from '../actions.js';
+import { briefing } from '../domain/prompts.js';
+import { nextStep, prevStep } from '../domain/session.js';
 import { refs } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
@@ -7,28 +9,13 @@ import { fail, verify } from '../verify.js';
 export const briefingAssemble = step('briefing-assemble', 'Briefing 组装')
   .target('为每个命题生成包含能力摘要的 Briefing')
   .summary('从能力摘要提取关键信息，组装Briefing')
-  .dependsOn('capability-research')
+  .dependsOn(prevStep('briefing-assemble'))
   .reads(refs.requirementWeb, refs.summaries)
   .writes(refs.briefing)
   .inputs('{workDir}/.meta/requirement-web.json', '{workDir}/.meta/summaries/*.json')
   .outputs('{workDir}/.meta/briefings/{seq}-{short_name}.md')
-  .detail(`每个命题读取涉及能力摘要。
-
-提取：
-
-- mechanism_summary
-- bottlenecks
-- tradeoffs
-- experiment_code
-- references
-
-缺失能力摘要时标注缺失并继续处理其余能力。`)
-  .section('内容比例', `开篇 10-15%：从限定词痛点切入。
-主体 <= 70%：通用工程原理。
-场景化/特化 >= 30%：限定词、上下文、边界、验证点。
-收尾 10-15%：回到限定词给落地方案。
-
-每个 Briefing 必须包含场景化 Trace，至少 3 个场景输入、3 个边界、3 个验证点。`)
+  .detail(briefing.detail())
+  .section('内容比例', briefing.contentRatio())
   .contractRefs(
     refs.requirementWeb,
     refs.summaries,
@@ -37,12 +24,7 @@ export const briefingAssemble = step('briefing-assemble', 'Briefing 组装')
   )
   .taskTemplate(
     'Briefing Worker',
-    `你是 {proposition_name} 的 Briefing 组装专家。
-读取涉及能力摘要。
-提取机制、瓶颈、权衡、实验和参考。
-按内容比例组装 Briefing。
-写入场景化 Trace，至少 3/3/3。
-写入 {workDir}/.meta/briefings/{seq}-{short_name}.md。`,
+    briefing.workerTask(),
   )
   .verify(
     verify.file('{workDir}/.meta/briefings/{seq}-{short_name}.md', 'Briefing 文件存在'),
@@ -62,7 +44,7 @@ export const briefingAssemble = step('briefing-assemble', 'Briefing 组装')
   .reuse(
     { ifExists: '{workDir}/.meta/briefings/{seq}-{short_name}.md', skipDescription: 'Briefing 已存在' },
   )
-  .next('assemble')
+  .next(nextStep('briefing-assemble'))
   .display({
     pattern: 'auto_timeline',
     primary_unit: 'stage',

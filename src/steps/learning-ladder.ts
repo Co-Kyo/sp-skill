@@ -1,5 +1,7 @@
 import { step } from '@co-kyo/skillpack-types';
 import { doAction } from '../actions.js';
+import { ladderDetail, stepFormat, workerTask } from '../domain/ladder.js';
+import { nextStep, prevStep } from '../domain/session.js';
 import { refs } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
@@ -7,29 +9,13 @@ import { fail, verify } from '../verify.js';
 export const learningLadder = step('learning-ladder', '学习阶梯')
   .target('为每个命题生成从不会到能讲的渐进学习路径')
   .summary('生成从"不会"到"能讲"的渐进式路径')
-  .dependsOn('assemble')
+  .dependsOn(prevStep('learning-ladder'))
   .reads(refs.dependencyGraph, refs.summaries, refs.overview)
   .writes(refs.ladder)
   .inputs('{workDir}/.meta/dependency-graph.json', '{workDir}/.meta/summaries/*.json', '{workDir}/{seq}-{short_name}/overview.md')
   .outputs('{workDir}/{seq}-{short_name}/learning-ladder.md')
-  .detail(`提取命题能力子图。
-
-按依赖拓扑分层：
-
-- Layer 0：无依赖能力
-- Layer 1：依赖 Layer 0
-- Layer 2：依赖 Layer 0+1
-
-归纳 3-4 个阶段，每阶段包含概念、技能、综合步骤。`)
-  .section('步骤格式', `每步包含：
-
-- 要做什么
-- 你会看到什么
-- 这说明了什么
-- 接下来去哪
-- 做到才算过
-
-失败时给出明确回退指引。`)
+  .detail(ladderDetail())
+  .section('步骤格式', stepFormat())
   .contractRefs(
     refs.dependencyGraph,
     refs.summaries,
@@ -39,11 +25,7 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
   )
   .taskTemplate(
     '学习阶梯 Worker',
-    `你是 {proposition_name} 的学习阶梯生成专家。
-提取能力子图。
-拓扑排序并归纳阶段。
-每个阶段编排概念、技能、综合步骤。
-写入 learning-ladder.md。`,
+    workerTask(),
   )
   .verify(
     verify.file('{workDir}/{seq}-{short_name}/learning-ladder.md', '学习阶梯文件存在'),
@@ -63,7 +45,7 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
   .reuse(
     { ifExists: '{workDir}/{seq}-{short_name}/learning-ladder.md', skipDescription: '学习阶梯已存在' },
   )
-  .next('done')
+  .next(nextStep('learning-ladder'))
   .display({
     pattern: 'auto_timeline',
     primary_unit: 'stage',
