@@ -10,7 +10,7 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
   .target('为每个命题生成从不会到能讲的渐进学习路径')
   .summary('生成从"不会"到"能讲"的渐进式路径')
   .dependsOn(prevStep('learning-ladder'))
-  .reads(refs.dependencyGraph, refs.summaries, refs.overview)
+  .reads(refs.dependencyGraph, refs.summaries, refs.overview, refs.anchors)
   .writes(refs.ladder)
   .inputs('{workDir}/.meta/dependency-graph.json', '{workDir}/.meta/summaries/*.json', '{workDir}/{seq}-{short_name}/overview.md')
   .outputs('{workDir}/{seq}-{short_name}/learning-ladder.md')
@@ -22,6 +22,7 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
     refs.overview,
     refs.subagentBudget,
     refs.ladder,
+    refs.anchors,
   )
   .taskTemplate(
     '学习阶梯 Worker',

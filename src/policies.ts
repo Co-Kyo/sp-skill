@@ -35,6 +35,9 @@ export const policies: SourcePolicies = {
       'user_modified',
       'task_timeout',
       'task_failed',
+      'judgment_passed',
+      'judgment_failed',
+      'judgment_stuck',
     ],
   },
 };
