@@ -19,8 +19,18 @@ test('D8:dependsOn 只引用已声明步骤', () => {
   }
 });
 
-test('D8:步骤编号连续(00-10)', () => {
-  steps.forEach((s, i) => {
-    assert.equal(s.id, String(i).padStart(2, '0') + '-' + s.id.slice(3), `第 ${i} 位步骤 id 异常:${s.id}`);
-  });
+test('D8:步骤顺序与流程定义一致(00-10)', () => {
+  assert.deepEqual(steps.map((s) => s.id), [
+    'initialize',
+    'intent-anchor',
+    'brainstorm',
+    'partition',
+    'scan',
+    'capability-graph',
+    'evaluate-pool',
+    'capability-research',
+    'briefing-assemble',
+    'assemble',
+    'learning-ladder',
+  ]);
 });
