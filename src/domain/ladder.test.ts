@@ -8,7 +8,6 @@ import {
   stepFormat,
   workerTask,
 } from './ladder.js';
-import { calibrateJudgment } from './learner.js';
 
 test('ladderDetail 派生文本包含分层规则与阶段数约束', () => {
   const d = ladderDetail();
@@ -26,9 +25,6 @@ test('stepFormat 包含全部固定字段,且含二值验收字段', () => {
   assert.ok(LADDER_STEP_FIELDS.includes('做到才算过'));
 });
 
-test('workerTask 输出经校准签名(Phase R 恒等)', () => {
-  const base = workerTask();
-  assert.equal(calibrateJudgment(base, 'L1'), base);
-  assert.equal(calibrateJudgment(base, 'L4'), base);
-  assert.ok(base.includes('学习阶梯生成专家'));
+test('workerTask 输出为阶梯生成提示词(按级校准属 Phase I,见 B-P2-7)', () => {
+  assert.ok(workerTask().includes('学习阶梯生成专家'));
 });

@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { EFFECT_CONTRACTS } from './effects.js';
+
+// 仓库根(src/domain/ 上两级),用于 owns 路径存在性校验
+const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 
 test('效果契约:编号唯一、归属与保证非空', () => {
   const ids = EFFECT_CONTRACTS.map((c) => c.id);
@@ -9,6 +14,14 @@ test('效果契约:编号唯一、归属与保证非空', () => {
     assert.ok(c.artifact.length > 0, `${c.id} 缺 artifact`);
     assert.ok(c.owns.length > 0, `${c.id} 缺归属源文件`);
     assert.ok(c.expects.length > 0, `${c.id} 缺保证条目`);
+  }
+});
+
+test('效果契约:owns 指向的源文件真实存在(同源校验)', () => {
+  for (const c of EFFECT_CONTRACTS) {
+    for (const own of c.owns) {
+      assert.ok(existsSync(repoRoot + own), `${c.id} owns 路径不存在:${own}`);
+    }
   }
 });
 

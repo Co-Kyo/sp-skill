@@ -1,9 +1,6 @@
 // 学习域:学习阶梯领域服务。
 // 阶段数量、拓扑分层、Step 字段是学习规则——在此声明为数据,
 // 提示词由规则派生(Phase R 输出与流程版逐字一致)。
-import { calibrateJudgment } from './learner.js';
-import type { Level } from './learner.js';
-
 export const LADDER_STAGE_COUNT = { min: 3, max: 4 } as const;
 
 export const LAYER_RULES = [
@@ -41,11 +38,14 @@ ${fields}
 失败时给出明确回退指引。`;
 }
 
-export function workerTask(level: Level = 'L2'): string {
-  const base = `你是 {proposition_name} 的学习阶梯生成专家。
+// 注意:不设 level 参数——level 是运行时数据(anchors.json 的 target_level),
+// 构建期不可得;按级校准属 Phase I,且应采用「渲染 per-level 表/条件指令」模式
+// (同 assets/common/strategy-level.md 的既有模式),而非构建期求值。
+// (交叉审查 B-P2-7:构建期求值会静默恒按默认级别,无任何报错。)
+export function workerTask(): string {
+  return `你是 {proposition_name} 的学习阶梯生成专家。
 提取能力子图。
 拓扑排序并归纳阶段。
 每个阶段编排概念、技能、综合步骤。
 写入 learning-ladder.md。`;
-  return calibrateJudgment(base, level);
 }
