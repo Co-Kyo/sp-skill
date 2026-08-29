@@ -8,21 +8,19 @@ export function verifyPair(ref: string, existsDesc: string, parseDesc: string): 
   return [verifyKit.file(ref, existsDesc), verifyKit.json(ref, parseDesc)];
 }
 
-/** 共享 display 配置(intent-anchor/brainstorm/capability-graph 三处逐字相同) */
-export const DISPLAY_FOLD_MULTI = {
+/** title_fold 多选 display 基座(intent-anchor/brainstorm/capability-graph 三处共同字段) */
+const DISPLAY_FOLD_MULTI_BASE = {
   pattern: 'title_fold',
   max_visible: 7,
   badge: 'difficulty',
+  legend: true,
   selection: 'multi',
-};
+} as const;
 
-/** 共享 display 配置(partition/scan 两处 max_visible:3) */
-export const DISPLAY_FOLD_MULTI_3 = {
-  pattern: 'title_fold',
-  max_visible: 3,
-  badge: 'difficulty',
-  selection: 'multi',
-};
+/** title_fold + difficulty 多选 display;primary_unit 按步骤传入(anchor/proposition/capability) */
+export function displayFoldMulti(primaryUnit: string) {
+  return { ...DISPLAY_FOLD_MULTI_BASE, primary_unit: primaryUnit };
+}
 
 // re-export 便于步骤文件单一导入点
 export { failKit as fail, verifyKit as verify };

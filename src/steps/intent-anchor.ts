@@ -1,5 +1,6 @@
 import { step } from '@co-kyo/skillpack-types';
 import * as intent from '../domain/content/intent.js';
+import { displayFoldMulti } from '../domain/mechanics.js';
 import { refs } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
@@ -49,12 +50,5 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
     ),
   )
   .next('brainstorm')
-  .display({
-    pattern: 'title_fold',
-    primary_unit: 'anchor',
-    max_visible: 7,
-    badge: 'difficulty',
-    legend: true,
-    selection: 'multi',
-  })
+  .display(displayFoldMulti('anchor'))
   .build();

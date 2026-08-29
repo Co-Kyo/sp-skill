@@ -1,6 +1,7 @@
 import { step } from '@co-kyo/skillpack-types';
 import { doAction } from '../actions.js';
 import * as capability from '../domain/content/capability.js';
+import { displayFoldMulti } from '../domain/mechanics.js';
 import { refs } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
@@ -52,14 +53,7 @@ export const capabilityGraph = step('capability-graph', '能力图谱')
     ),
   )
   .next('evaluate-pool')
-  .display({
-    pattern: 'title_fold',
-    primary_unit: 'capability',
-    max_visible: 7,
-    badge: 'difficulty',
-    legend: true,
-    selection: 'multi',
-  })
+  .display(displayFoldMulti('capability'))
   .seq('capability-graph-seq', '能力图谱构建', [
     doAction('merge', 'capability-dedupe', '能力去重', '跨命题合并或拆分能力，并记录 merge/split trace。', 5),
     doAction('infer', 'capability-deps', '标注依赖', '基于层级、内容引用和 covers 交集推断依赖。', 5),
