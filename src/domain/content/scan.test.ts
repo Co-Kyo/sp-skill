@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { detail, extractTask, EXTRACT_FIELDS, outputSchema, phaseASection, SCAN_DENSITY } from './scan.js';
+import { PARALLEL_WIDTH } from './shared.js';
+
+test('scan:密度表派生逐字一致(含 L2 默认注记)', () => {
+  const d = detail();
+  assert.ok(d.includes('- core: kw=2, r=8（L2 默认）'));
+  assert.ok(d.includes('- premise: kw=1, r=3'));
+  assert.ok(d.includes('- outlook: kw=1, r=2'));
+});
+
+test('scan:W 公式与 shared.PARALLEL_WIDTH 同源', () => {
+  assert.ok(phaseASection().includes(`W = min(${PARALLEL_WIDTH}, 命题数)`));
+  assert.equal(PARALLEL_WIDTH, 5);
+});
+
+test('scan:提取字段四件套在枚举与任务文案同源', () => {
+  assert.deepEqual(EXTRACT_FIELDS, ['key_concepts', 'capability_points', 'depth_level', 'quality_signals']);
+  assert.ok(extractTask().includes('key_concepts、capability_points、depth_level、quality_signals'));
+});
+
+test('scan:输出 Schema 整块搬移无缺损(三个 JSON 样例)', () => {
+  const s = outputSchema();
+  assert.ok(s.includes('search-batch.{batch_id}.json:'));
+  assert.ok(s.includes('url-batches.json:'));
+  assert.ok(s.includes('partial.{batch_id}.json:'));
+  assert.equal(s.split('```json').length - 1, 3);
+});
+
+test('scan:密度表角色覆盖 detail 与 SCAN_DENSITY 一致', () => {
+  assert.deepEqual(SCAN_DENSITY.map((d) => d.role), ['core', 'premise', 'outlook']);
+});
