@@ -1,5 +1,6 @@
 import { step } from '@co-kyo/skillpack-types';
 import { doAction } from '../actions.js';
+import { effectContractSection } from '../domain/effects.js';
 import { ladderDetail, stepFormat, workerTask } from '../domain/ladder.js';
 import { nextStep, prevStep } from '../domain/session.js';
 import { refs } from '../contracts.js';
@@ -16,6 +17,7 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
   .outputs('{workDir}/{seq}-{short_name}/learning-ladder.md')
   .detail(ladderDetail())
   .section('步骤格式', stepFormat())
+  .section('效果契约', effectContractSection('E-ladder-judgment'))
   .contractRefs(
     refs.dependencyGraph,
     refs.summaries,

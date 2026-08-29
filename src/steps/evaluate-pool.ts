@@ -50,6 +50,7 @@ L4：任一维度 >= 2 即入池。
 生成 README.md 和 candidates.md。`,
   )
   .verify(
+    verify.file('{workDir}/README.md', '命题总览存在'),
     verify.json('{workDir}/.meta/evaluations.json', '评估结果可解析'),
     verify.field('priority_trace', '每个命题包含 priority_trace'),
     verify.field('recommended_order', '推荐顺序合理'),

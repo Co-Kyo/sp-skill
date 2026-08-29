@@ -1,5 +1,6 @@
 import { step } from '@co-kyo/skillpack-types';
 import { doAction } from '../actions.js';
+import { effectContractSection } from '../domain/effects.js';
 import { briefing } from '../domain/prompts.js';
 import { nextStep, prevStep } from '../domain/session.js';
 import { refs } from '../contracts.js';
@@ -16,6 +17,7 @@ export const briefingAssemble = step('briefing-assemble', 'Briefing 组装')
   .outputs('{workDir}/.meta/briefings/{seq}-{short_name}.md')
   .detail(briefing.detail())
   .section('内容比例', briefing.contentRatio())
+  .section('效果契约', effectContractSection('E-briefing-trace'))
   .contractRefs(
     refs.requirementWeb,
     refs.summaries,

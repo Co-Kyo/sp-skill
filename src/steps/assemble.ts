@@ -1,5 +1,6 @@
 import { step } from '@co-kyo/skillpack-types';
 import { doAction } from '../actions.js';
+import { effectContractSection } from '../domain/effects.js';
 import { assembly } from '../domain/prompts.js';
 import { nextStep, prevStep } from '../domain/session.js';
 import { refs } from '../contracts.js';
@@ -24,6 +25,7 @@ export const assemble = step('assemble', '命题组装')
   .detail(assembly.detail())
   .section('Markdown Agent', assembly.markdownAgent())
   .section('Experiment Agent', assembly.experimentAgent())
+  .section('效果契约', effectContractSection('E-assemble-ratio'))
   .contractRefs(
     refs.briefing,
     refs.requirementWeb,

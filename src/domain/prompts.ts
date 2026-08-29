@@ -118,7 +118,7 @@ references 按 Tier 排序去重。
 
 合并为可运行的 HTML/JS 文件。
 
-README 必须包含运行方式和验证检查点。`,
+README 必须包含运行方式、预期结果、成功判据、失败含义和验证检查点。`,
   markdownAgentTask: () => `你是 {proposition_name} 的 Markdown 组装专家。
 读取 Briefing。
 组装 overview、edge-cases、trade-offs、references。
@@ -130,5 +130,5 @@ README 必须包含运行方式和验证检查点。`,
 读取 Briefing。
 选取战略价值最高的实验代码。
 合并为可运行 HTML/JS。
-README 说明运行方式和验证检查点。`,
+README 说明运行方式、预期结果、成功判据、失败含义和验证检查点。`,
 };

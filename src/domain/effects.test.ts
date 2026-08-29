@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
-import { EFFECT_CONTRACTS } from './effects.js';
+import { EFFECT_CONTRACTS, effectContractSection } from './effects.js';
 
 // 仓库根(src/domain/ 上两级),用于 owns 路径存在性校验
 const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
@@ -37,4 +37,15 @@ test('能力研究契约:素材不静默丢弃', () => {
   const research = EFFECT_CONTRACTS.find((c) => c.id === 'E-capability-coverage');
   assert.ok(research, '缺少 E-capability-coverage');
   assert.ok(research.expects.some((e) => e.includes('不能静默丢弃')));
+});
+
+test('D7:契约小节渲染含编号、归属与保证', () => {
+  const s = effectContractSection('E-ladder-judgment');
+  assert.ok(s.includes('E-ladder-judgment'));
+  assert.ok(s.includes('做到才算过'));
+  assert.ok(s.includes('src/domain/ladder.ts'));
+});
+
+test('D7:未知契约 id 抛错(防静默漏接)', () => {
+  assert.throws(() => effectContractSection('E-nope'));
 });

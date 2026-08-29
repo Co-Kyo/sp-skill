@@ -48,3 +48,13 @@ export const EFFECT_CONTRACTS: readonly EffectContract[] = [
     ],
   },
 ];
+
+/** D7:效果契约小节渲染(运行时 AI 与审计工具的消费方)。未知 id 抛错,防静默漏接。 */
+export function effectContractSection(id: string): string {
+  const c = EFFECT_CONTRACTS.find((x) => x.id === id);
+  if (!c) throw new Error(`未知效果契约:${id}`);
+  const expects = c.expects.map((e) => `- ${e}`).join('\n');
+  return `本产物的效果契约 ${c.id}（违约时修改：${c.owns.join(' / ')}）：
+
+${expects}`;
+}

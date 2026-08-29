@@ -51,3 +51,25 @@
 - `difficulty_reason`：一句话说明主要难度来源
 - `recommended_order`：推荐学习序号（low→medium→high，同级内按依赖关系排序）
 - `priority_trace`：必须包含年限阈值适配信息（如"L2：≥6→high"）
+
+## 命题总览 README 模板
+
+`{workDir}/README.md` 是学习者的入口，按以下模板生成：
+
+```markdown
+# 命题总览 — {场景简称}
+
+## 建议起点
+
+按 `recommended_order` 顺序学习；难度与会话数供规划参考。
+
+| 序号 | 命题 | 难度 | 建议会话数 | 优先级 |
+|------|------|------|------------|--------|
+| 1 | {proposition_name} | medium | 2 | high |
+
+建议会话数映射（初版可调）：low=1、medium=2、high=3-4。
+
+## 使用方式
+
+1. 从本总览选命题 → 2. 进入 `{seq}-{short_name}/learning-ladder.md` 跟学 → 3. overview / edge-cases / trade-offs 作为该命题的参考与备考材料。
+```

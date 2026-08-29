@@ -1,5 +1,6 @@
 import { step } from '@co-kyo/skillpack-types';
 import { doAction } from '../actions.js';
+import { effectContractSection } from '../domain/effects.js';
 import { research } from '../domain/prompts.js';
 import { nextStep, prevStep } from '../domain/session.js';
 import { refs } from '../contracts.js';
@@ -17,6 +18,7 @@ export const capabilityResearch = step('capability-research', '能力研究')
   .detail(research.detail())
   .section('域 Agent 任务', research.domainAgentTask())
   .section('素材分配与 usage trace', research.materialAllocation())
+  .section('效果契约', effectContractSection('E-capability-coverage'))
   .contractRefs(
     refs.capabilityGraph,
     refs.readme,
