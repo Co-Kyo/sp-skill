@@ -1,9 +1,23 @@
 import type { SkillSourceModel } from '@co-kyo/skillpack-types';
 import { createSkillFromModel } from '@co-kyo/skillpack';
 import { contracts } from './src/contracts.js';
-import { TAIL_SESSION_FLOW } from './src/domain/session.js';
+import { HEAD_SESSION_FLOW, TAIL_SESSION_FLOW } from './src/domain/session.js';
 import { policies } from './src/policies.js';
 import { steps } from './src/steps/index.js';
+
+// Phase II:阶段→步骤映射唯一数据源(flow.test 守卫其与 steps 全序一致)
+export const phaseDefs: { name: string; stepIds: string[]; description: string }[] = [
+  { name: '初始化', stepIds: [HEAD_SESSION_FLOW[0]], description: '确认 workDir（交互步骤），各步骤按需加载公共规则并写入 init.json' },
+  { name: '意图锚定', stepIds: [HEAD_SESSION_FLOW[1]], description: '解析指令并生成共享骨架' },
+  { name: '头脑风暴', stepIds: [HEAD_SESSION_FLOW[2]], description: '条件触发，生成需求网' },
+  { name: '依赖分区', stepIds: [HEAD_SESSION_FLOW[3]], description: '拆分 session 与扫描批次' },
+  { name: '前处理', stepIds: [...HEAD_SESSION_FLOW.slice(4)], description: '串行扫描、建图、评估入池' },
+  { name: '后处理', stepIds: [...TAIL_SESSION_FLOW], description: '串行研究、Briefing、组装、学习阶梯' },
+];
+
+// 手工对齐的 ASCII 流程图:保持字面量(派生对齐有字节风险),由 flow.test 守卫其区间标注
+export const flowOverview = `初始化 → 意图锚定 → 头脑风暴 → 依赖分区 → 前处理 → 后处理
+         (00)      (01)      (02)      (03-05)   (06-10)`;
 
 const model: SkillSourceModel = {
   meta: {
@@ -27,17 +41,9 @@ const model: SkillSourceModel = {
       { name: '--year=L1|L2|L3|L4', description: '经验年限，可省略并自动推断' },
       { name: '--source=<url|file>', description: '指定扫描信源，可省略并自动推断' },
     ],
-    phases: [
-      { name: '初始化', stepIds: ['initialize'], description: '确认 workDir（交互步骤），各步骤按需加载公共规则并写入 init.json' },
-      { name: '意图锚定', stepIds: ['intent-anchor'], description: '解析指令并生成共享骨架' },
-      { name: '头脑风暴', stepIds: ['brainstorm'], description: '条件触发，生成需求网' },
-      { name: '依赖分区', stepIds: ['partition'], description: '拆分 session 与扫描批次' },
-      { name: '前处理', stepIds: ['scan', 'capability-graph', 'evaluate-pool'], description: '串行扫描、建图、评估入池' },
-      { name: '后处理', stepIds: [...TAIL_SESSION_FLOW], description: '串行研究、Briefing、组装、学习阶梯' },
-    ],
+    phases: phaseDefs,
     initStepId: 'initialize',
-    flowOverview: `初始化 → 意图锚定 → 头脑风暴 → 依赖分区 → 前处理 → 后处理
-         (00)      (01)      (02)      (03-05)   (06-10)`,
+    flowOverview,
   },
   contracts,
   policies,

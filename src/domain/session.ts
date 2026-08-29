@@ -10,6 +10,19 @@ export const TAIL_SESSION_FLOW = [
 
 export type TailSessionStage = (typeof TAIL_SESSION_FLOW)[number];
 
+// Phase II(D8 扩展):前处理七步的会话顺序,与 TAIL_SESSION_FLOW 合成 11 步全序
+export const HEAD_SESSION_FLOW = [
+  'initialize',
+  'intent-anchor',
+  'brainstorm',
+  'partition',
+  'scan',
+  'capability-graph',
+  'evaluate-pool',
+] as const;
+
+export type HeadSessionStage = (typeof HEAD_SESSION_FLOW)[number];
+
 const EDGES: Record<TailSessionStage, { prev: string; next: string }> = {
   'capability-research': { prev: 'evaluate-pool', next: 'briefing-assemble' },
   'briefing-assemble': { prev: 'capability-research', next: 'assemble' },
