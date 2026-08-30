@@ -1,6 +1,6 @@
 {
   "name": "@co-kyo/sp-skill-source",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,8 +9,8 @@
     "test": "node --import tsx --test src/domain/ladder.test.ts src/domain/session.test.ts src/domain/effects.test.ts src/domain/learner.test.ts src/steps/flow.test.ts src/domain/content/content.test.ts src/domain/content/brainstorm.test.ts src/domain/content/scan.test.ts src/domain/numbering-governance.test.ts"
   },
   "dependencies": {
-    "@co-kyo/skillpack": "^0.1.0",
-    "@co-kyo/skillpack-types": "^0.1.0"
+    "@co-kyo/skillpack": "^0.2.0",
+    "@co-kyo/skillpack-types": "^0.2.0"
   },
   "devDependencies": {
     "@types/node": "^26.1.0",
