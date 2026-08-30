@@ -44,6 +44,7 @@ export const refs = {
   brainstormSchemas: { path: 'assets/01-brainstorm/schemas.md', description: '头脑风暴输出格式', required: true },
   yearRules: { path: 'assets/00-intent-anchor/year-rules.md', description: '年限推断规则', required: true },
   skipRules: { path: 'assets/00-intent-anchor/skip-rules.md', description: '跳过判断规则', required: true },
+  evaluationMethod: { path: 'assets/05-evaluate-pool/method.md', description: '评估方法论（投影）', required: true },
 } satisfies Record<string, SourceRef>;
 
 export const contracts: SourceContract[] = [

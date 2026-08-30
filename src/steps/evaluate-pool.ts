@@ -9,7 +9,7 @@ export const evaluatePool = step('evaluate-pool', '评估入池')
   .target('生成按年限阈值入池的评估结果与推荐顺序')
   .summary('四维评估矩阵打分，确定优先级和学习顺序')
   .dependsOn('capability-graph')
-  .reads(refs.capabilityGraph, refs.dependencyGraph)
+  .reads(refs.capabilityGraph, refs.dependencyGraph, refs.evaluationMethod)
   .writes(refs.evaluations, refs.readme, refs.candidates)
   .inputs('{workDir}/.meta/capability-graph.json', '{workDir}/.meta/dependency-graph.json')
   .outputs('{workDir}/.meta/evaluations.json', '{workDir}/README.md', '{workDir}/.meta/candidates.md')
@@ -21,6 +21,7 @@ export const evaluatePool = step('evaluate-pool', '评估入池')
     refs.evaluations,
     refs.readme,
     refs.candidates,
+    refs.evaluationMethod,
   )
   .taskTemplate(
     '四维评分',
