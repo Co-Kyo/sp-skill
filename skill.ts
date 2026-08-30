@@ -6,18 +6,21 @@ import { policies } from './src/policies.js';
 import { steps } from './src/steps/index.js';
 
 // Phase II:阶段→步骤映射唯一数据源(flow.test 守卫其与 steps 全序一致)
+// B11-A:单步阶段的 description 以该步 summary 为正本(消除双写漂移)
+const summaryOf = (id: string) => steps.find((s) => s.id === id)?.summary ?? '';
+
 export const phaseDefs: { name: string; stepIds: string[]; description: string }[] = [
-  { name: '初始化', stepIds: [HEAD_SESSION_FLOW[0]], description: '确认 workDir（交互步骤），各步骤按需加载公共规则并写入 init.json' },
-  { name: '意图锚定', stepIds: [HEAD_SESSION_FLOW[1]], description: '解析指令并生成共享骨架' },
-  { name: '头脑风暴', stepIds: [HEAD_SESSION_FLOW[2]], description: '条件触发，生成需求网' },
-  { name: '依赖分区', stepIds: [HEAD_SESSION_FLOW[3]], description: '拆分 session 与扫描批次' },
+  { name: '初始化', stepIds: [HEAD_SESSION_FLOW[0]], description: summaryOf('initialize') },
+  { name: '意图锚定', stepIds: [HEAD_SESSION_FLOW[1]], description: summaryOf('intent-anchor') },
+  { name: '头脑风暴', stepIds: [HEAD_SESSION_FLOW[2]], description: summaryOf('brainstorm') },
+  { name: '依赖分区', stepIds: [HEAD_SESSION_FLOW[3]], description: summaryOf('partition') },
   { name: '前处理', stepIds: [...HEAD_SESSION_FLOW.slice(4)], description: '串行扫描、建图、评估入池' },
   { name: '后处理', stepIds: [...TAIL_SESSION_FLOW], description: '串行研究、Briefing、组装、学习阶梯' },
 ];
 
-// 手工对齐的 ASCII 流程图:保持字面量(派生对齐有字节风险),由 flow.test 守卫其区间标注
+// B10-A:区间标注修正,与 phases 边界一致(6 阶段 6 标注;原 (03-05)/(06-10) 错位已登记修正)
 export const flowOverview = `初始化 → 意图锚定 → 头脑风暴 → 依赖分区 → 前处理 → 后处理
-         (00)      (01)      (02)      (03-05)   (06-10)`;
+         (00)      (01)      (02)      (03)      (04-06)   (07-10)`;
 
 const model: SkillSourceModel = {
   meta: {

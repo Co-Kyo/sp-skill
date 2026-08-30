@@ -5,8 +5,17 @@ export const ANCHOR_COUNT = { min: 8, max: 15 } as const;
 export const LEVEL_ROLE_CONSTRAINT =
   'core=target_level、premise=target_level-1、outlook=target_level+1';
 
-/** 跳过头脑风暴的场景化拦截词 */
-export const INTERCEPT_WORDS = ['面试', '场景', '分析', '复杂'] as const;
+/** 跳过头脑风暴的场景化拦截词(B7-A:与 assets/00-intent-anchor/skip-rules.md 并集统一) */
+export const INTERCEPT_WORDS = [
+  '面试',
+  '场景',
+  '分析',
+  '复杂',
+  '考察',
+  '问',
+  '中大型',
+  '多团队',
+] as const;
 
 /** 年限推断优先级链(从高到低) */
 export const YEAR_INFERENCE_CHAIN = [

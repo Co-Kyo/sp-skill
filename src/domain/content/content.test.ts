@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
-import { countVerifyText, detail, insufficientAnchorsText, skipSection, target } from './intent.js';
+import { REASON_TYPES } from './brainstorm.js';
+import { SCAN_DENSITY } from './scan.js';
+import { countVerifyText, detail, INTERCEPT_WORDS, insufficientAnchorsText, skipSection, target } from './intent.js';
 import { detail as partitionDetail, sessionOverflowText, threeLayerSection } from './partition.js';
 import { capabilityOverflowText, highgroundSection } from './capability.js';
 import { detail as evaluationDetail, thresholdSection } from './evaluation.js';
@@ -26,8 +28,32 @@ test('intent:年限链与 role/level 约束进 detail', () => {
   assert.ok(d.includes('core=target_level、premise=target_level-1、outlook=target_level+1'));
 });
 
-test('intent:拦截词数组进跳过判断', () => {
-  assert.ok(skipSection().includes('面试、场景、分析、复杂'));
+test('intent:拦截词数组进跳过判断(B7-A 并集后 8 词)', () => {
+  assert.deepEqual(INTERCEPT_WORDS, ['面试', '场景', '分析', '复杂', '考察', '问', '中大型', '多团队']);
+  assert.ok(skipSection().includes('面试、场景、分析、复杂、考察、问、中大型、多团队'));
+});
+
+test('B3:SCAN_DENSITY 与 strategy-level.md L2 列一致(漂移锁)', () => {
+  const t = readFileSync(repoRoot + 'assets/common/strategy-level.md', 'utf-8');
+  for (const d of SCAN_DENSITY) {
+    assert.ok(t.includes(`kw=${d.kw}, r=${d.r}`), `密度漂移:${d.role} kw=${d.kw}, r=${d.r}`);
+  }
+});
+
+test('B4:role/level 约束在两份资产中同义存在(漂移锁)', () => {
+  const sl = readFileSync(repoRoot + 'assets/common/strategy-level.md', 'utf-8');
+  const sr = readFileSync(repoRoot + 'assets/00-intent-anchor/skip-rules.md', 'utf-8');
+  assert.ok(sl.includes('= target_level - 1'), 'strategy-level 缺 premise 约束');
+  assert.ok(sr.includes('level=target_level-1'), 'skip-rules 缺 premise 约束');
+});
+
+test('B5:reason_type 枚举在两份资产中一致(漂移锁)', () => {
+  const ca = readFileSync(repoRoot + 'assets/01-brainstorm/constraint-agent.md', 'utf-8');
+  const sch = readFileSync(repoRoot + 'assets/01-brainstorm/schemas.md', 'utf-8');
+  for (const r of REASON_TYPES) {
+    assert.ok(ca.includes(r), `constraint-agent 缺 ${r}`);
+    assert.ok(sch.includes(r), `schemas 缺 ${r}`);
+  }
 });
 
 test('partition:Leiden 阈值与 session 上限贯穿派生文本', () => {

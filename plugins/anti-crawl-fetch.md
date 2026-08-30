@@ -53,6 +53,8 @@ npm install -g playwright --registry=https://registry.npmmirror.com && npx playw
 npm install -g playwright && npx playwright install chromium
 ```
 
+> **与主流程联动（B8-A）**：全局安装失败时，主流程标记 `playwright_available=false`；此后反爬域名的 `fetch_status` 统一记为 `failed`（`fetch_status_trace` 记录原因），由主流程降级处理，本插件不再重试。
+
 **标记**：安装成功后，后续步骤不再重复检查。安装失败标记 `fetch_status: "failed"` + `fetch_status_trace: "Playwright 安装失败"`。
 
 > **注意**：全局安装后，`require('playwright')` 在任何目录都能访问，不需要在产物目录安装。

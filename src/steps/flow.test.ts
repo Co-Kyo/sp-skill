@@ -42,13 +42,19 @@ test('D8+:meta.phases 覆盖全部步骤且顺序与 steps 一致', () => {
   assert.equal(HEAD_SESSION_FLOW.length + TAIL_SESSION_FLOW.length, steps.length);
 });
 
-test('D8+:flowOverview 字节锁(6 阶段名 + 区间标注)', () => {
+test('D8+:flowOverview 标注与 phases 边界一致(B10-A 修正后恢复真实断言)', () => {
+  let idx = 0;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const expected = phaseDefs.map((p) => {
+    const start = idx;
+    idx += p.stepIds.length;
+    return start === idx - 1 ? `(${pad(start)})` : `(${pad(start)}-${pad(idx - 1)})`;
+  });
+  assert.deepEqual(expected, ['(00)', '(01)', '(02)', '(03)', '(04-06)', '(07-10)']);
+  for (const tag of expected) {
+    assert.ok(flowOverview.includes(tag), `flowOverview 缺少区间标注:${tag}`);
+  }
   for (const p of phaseDefs) {
     assert.ok(flowOverview.includes(p.name), `flowOverview 缺少阶段名:${p.name}`);
-  }
-  // 已知数据审计发现(B10):区间标注 (03-05)/(06-10) 与 phases 边界不一致
-  // (6 阶段只有 5 个标注)。此处仅字节锁防无意识改动;语义修正属 Phase III 登记决策。
-  for (const tag of ['(00)', '(01)', '(02)', '(03-05)', '(06-10)']) {
-    assert.ok(flowOverview.includes(tag), `flowOverview 缺少区间标注:${tag}`);
   }
 });

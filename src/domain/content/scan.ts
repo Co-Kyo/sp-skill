@@ -27,7 +27,7 @@ export function detail(): string {
 1. 使用 npx playwright --version 检查全局安装状态。
 2. 若未安装，使用 clarify 请用户选择全局安装或跳过。
 3. Playwright 安装命令：npm install -g playwright --registry=https://registry.npmmirror.com && npx playwright install chromium。
-4. 安装失败时标记 playwright_available=false，反爬域名直接 failed。
+4. 安装失败时标记 playwright_available=false，反爬域名直接 failed（与 anti-crawl-fetch 插件联动：此后反爬域名的 fetch_status 统一记为 failed，fetch_status_trace 记录原因）。
 
 搜索密度按 strategy-level 查表：
 
@@ -98,25 +98,29 @@ export function checkpointSection(): string {
   return `展示素材 Tier 分布、丢弃数和 role 覆盖统计，使用 clarify 等待用户确认后再进入 {{step:capability-graph}}。`;
 }
 
+// B1-A:输出 Schema 以 assets/03-scan/schemas.md 为正本,此处为镜像渲染源;
+// 漂移锁见 scan.test.ts(三方 JSON 块逐字节比对)。
 export function outputSchema(): string {
   return `search-batch.{batch_id}.json:
 
 \`\`\`json
 {
-  "batch_id": "B1",
-  "propositions_searched": ["RW-P1"],
+  "batch_id": "{batch_id}",
+  "propositions_searched": ["RW-P1", "RW-P2"],
   "results": [
     {
-      "url": "https://example.com/a",
-      "title": "title",
-      "snippet": "snippet",
-      "domain": "example.com",
-      "tier": "unknown",
+      "url": "https://web.dev/articles/...",
+      "title": "搜索结果标题",
+      "snippet": "搜索结果摘要（100-200字）",
+      "domain": "web.dev",
+      "tier": "T0|anti-crawl|unknown",
       "from_proposition": "RW-P1",
       "keyword_group": "principles"
     }
   ],
-  "excluded": []
+  "excluded": [
+    {"url": "...", "reason": "命中 excluded_keywords"}
+  ]
 }
 \`\`\`
 
@@ -125,28 +129,30 @@ url-batches.json:
 \`\`\`json
 {
   "generated_at": "ISO时间",
-  "total_urls": 1,
-  "total_batches": 1,
-  "playwright_available": false,
+  "total_urls": 150,
+  "total_batches": 3,
+  "playwright_available": true,
+  "t0_domains": ["web.dev", ...],
+  "anti_crawl_domains": ["juejin.cn", ...],
   "batches": [
     {
       "batch_id": "B1",
-      "url_count": 1,
-      "propositions_covered": ["RW-P1"],
+      "url_count": 50,
+      "propositions_covered": ["RW-P1", "RW-P2"],
       "urls": [
         {
-          "url": "https://example.com/a",
-          "title": "title",
-          "snippet": "snippet",
-          "domain": "example.com",
-          "tier": "unknown",
+          "url": "https://web.dev/articles/...",
+          "title": "搜索结果标题",
+          "snippet": "搜索结果摘要",
+          "domain": "web.dev",
+          "tier": "T0",
           "need_playwright": false,
           "from_proposition": "RW-P1"
         }
       ]
     }
   ],
-  "excluded": []
+  "excluded": [...]
 }
 \`\`\`
 
@@ -154,25 +160,33 @@ partial.{batch_id}.json:
 
 \`\`\`json
 {
-  "batch_id": "B1",
+  "batch_id": "{batch_id}",
   "materials": [
     {
-      "id": "B1-M1",
-      "title": "title",
-      "url": "https://example.com/a",
-      "domain": "example.com",
-      "source_tier": "T3",
+      "id": "B{batch_id}-M{N}",
+      "title": "标题",
+      "url": "https://...",
+      "domain": "domain.com",
+      "source_tier": "T0|T1|T2|T3",
       "from_proposition": ["RW-P1"],
       "relevance": "与命题的关联说明",
-      "fetch_status": "ok",
-      "fetch_method": "direct",
-      "depth_level": "机制级",
-      "file_path": "B1-M1-example.md"
+      "fetch_status": "ok|failed",
+      "fetch_method": "direct|playwright",
+      "fetch_status_trace": "失败原因",
+      "depth_level": "原理级",
+      "file_path": "B{batch_id}-M{N}-{slug}.md"
     }
   ],
   "discarded": []
 }
-\`\`\``;
+\`\`\`
+
+文件名规则：
+
+- 搜索批次文件：\`search-batch.{batch_id}.json\`
+- URL 批次文件：\`url-batch.{batch_id}.json\`
+- 内容提取文件：\`partial.{batch_id}.json\`
+- Markdown 文件：\`B{batch_id}-M{N}-{slug}.md\`（如 \`B1-M3-rendering-performance.md\`）`;
 }
 
 export function searchTask(): string {
