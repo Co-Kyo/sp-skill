@@ -2,7 +2,7 @@
 
 > 本文件定义 4 个维度 Agent 的初始调用设定。主 agent 按此文件分发 spawn，sub-agent 自行读取对应文件完成任务。
 >
-> **注意**：收敛者 Agent 不在此文件定义范围内。收敛者的 task 直接在 `processes/01-brainstorm.md` §5 中内联定义。
+> **注意**：收敛者 Agent 不在此文件定义范围内。收敛者的 task 直接在 `processes/02-brainstorm.md` §5 中内联定义。
 
 ---
 
@@ -33,7 +33,7 @@
 每个 Agent 启动后，自行用 read 工具读取：
 
 1. **自己的角色定义**：上表中的 `agent_definition_path`（定义身份、任务、输出格式）
-2. **共享骨架**：`{workDir}/.meta/brainstorm/anchors.json`（Step 00 产出，含锚点 + 策略 + 年限）
+2. **共享骨架**：`{workDir}/.meta/brainstorm/anchors.json`（Step 01 产出，含锚点 + 策略 + 年限）
 3. **年限规则**：`plugins/year-granularity.md`（阶梯映射 + 颗粒度要求）
 4. **输出格式**：`assets/01-brainstorm/schemas.md§{schema_section}`（JSON 结构定义）
 

@@ -60,8 +60,9 @@ jobs:
         run: |
           npm ci
           npm run typecheck
-          npm test
           npm run build
+          npm test
+          npm test
 
       - name: Assemble Markdown skill release
         if: steps.version-gate.outputs.should_release == 'true'
@@ -111,11 +112,18 @@ jobs:
         run: |
           git archive --format=zip -o release/source.zip "$RELEASE_TAG"
 
+      - name: Extract release notes from CHANGELOG
+        if: steps.version-gate.outputs.should_release == 'true'
+        run: |
+          awk -v header="## ${RELEASE_TAG}" '$0 ~ "^"header {found=1; next} /^## /{found=0} found' CHANGELOG.md > release/release-notes.md
+          test -s release/release-notes.md || echo "sp-skill ${RELEASE_TAG}" > release/release-notes.md
+
       - name: Create GitHub Release
         if: steps.version-gate.outputs.should_release == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
+          body_path: release/release-notes.md
           files: |
             release/source.zip
             release/sp-skill-*.zip

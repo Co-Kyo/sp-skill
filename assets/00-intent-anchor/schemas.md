@@ -1,4 +1,4 @@
-# 00-intent-anchor JSON 格式定义
+# 1-intent-anchor JSON 格式定义
 
 > 本文件定义意图锚定阶段的 JSON 输出格式。
 
