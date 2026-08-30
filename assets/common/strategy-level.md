@@ -45,14 +45,14 @@ level 描述概念的客观归属层，role 描述概念相对于目标用户的
 
 | 步骤 | 如何使用 level_weight |
 |------|----------------------|
-| 2 头脑风暴·维度 Agent | 源头打标：每个条目自标 level_weight |
-| 2 头脑风暴·收敛者 | 校验对齐：跨维度一致性检查，不一致时按优先级对齐 |
-| 4 scan | 密度分级：core 深扫、premise 浅扫、outlook 确认存在 |
-| 5 capability-graph | 预查找深度：core 双轨（T0+T1/T2）、premise 仅 T0、outlook 只记录名称 |
-| 6 evaluate-pool | 评分范围：core 完整四维、premise/outlook 简化评分 |
-| 7 capability-research | 研究深度：core 按 depth 参数、premise 摘要、outlook 名称+描述 |
-| 9 assemble | 组装完整度：core 完整四象限、premise/outlook 仅 overview+refs |
-| 10 learning-ladder | 阶段编排：premise→core→outlook 组织学习路径 |
+| 01 头脑风暴·维度 Agent | 源头打标：每个条目自标 level_weight |
+| 01 头脑风暴·收敛者 | 校验对齐：跨维度一致性检查，不一致时按优先级对齐 |
+| 03 scan | 密度分级：core 深扫、premise 浅扫、outlook 确认存在 |
+| 04 capability-graph | 预查找深度：core 双轨（T0+T1/T2）、premise 仅 T0、outlook 只记录名称 |
+| 05 evaluate-pool | 评分范围：core 完整四维、premise/outlook 简化评分 |
+| 06 capability-research | 研究深度：core 按 depth 参数、premise 摘要、outlook 名称+描述 |
+| 08 assemble | 组装完整度：core 完整四象限、premise/outlook 仅 overview+refs |
+| 09 learning-ladder | 阶段编排：premise→core→outlook 组织学习路径 |
 
 ---
 
@@ -60,7 +60,7 @@ level 描述概念的客观归属层，role 描述概念相对于目标用户的
 
 头脑风暴的收敛角色，替代原"裁判 Agent"。
 
-**职责正本**：完整职责、读取清单与输出格式以 2-brainstorm 步骤的任务模板「收敛者」为正本（含校验、对齐、收束、去重、补位、图谱构建六步）。
+**职责正本**：完整职责、读取清单与输出格式以 02-brainstorm 步骤的任务模板「收敛者」为正本（含校验、对齐、收束、去重、补位、图谱构建六步）。
 
 **对齐优先级**：约束 > 技术 > 场景 > 学习。
 

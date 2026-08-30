@@ -1,4 +1,4 @@
-# 4-scan 输出格式定义
+# 02-scan 输出格式定义
 
 ## search-batch.{batch_id}.json
 
