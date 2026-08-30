@@ -1,4 +1,4 @@
-# 01-brainstorm JSON 格式定义
+# brainstorm JSON 格式定义
 
 > 本文件定义头脑风暴阶段 4 维度 Agent 输出的 JSON 格式。
 

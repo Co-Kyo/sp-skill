@@ -1,4 +1,4 @@
-# Step 04 输出格式
+# capability-graph 输出格式
 
 ## §0: capabilities.md — 能力知识库主文件
 

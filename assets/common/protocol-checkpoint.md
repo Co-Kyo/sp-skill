@@ -78,17 +78,17 @@
 
 | 阶段 | 文件 | 位置 | 核心产物 | 介入价值 |
 |------|------|------|---------|---------|
-| initialize | initialize-barrier.md | Step 00 完成后 | init.json + run.json | 确认 workDir、运行信封 |
-| intent-anchor | intent-anchor-barrier.md | Step 01 完成后 | anchors.json | 确认年限推断、锚点、跳过判断 |
-| brainstorm | brainstorm-barrier.md | Step 02 完成后 | requirement-web.json | 确认需求网、命题/能力/依赖/排除项 |
-| partition | partition-barrier.md | Step 03 完成后 | partition-analysis.json + execution-plan.md | 确认分区方案、执行计划 |
-| scan | scan-barrier.md | Step 04 完成后 | index.json + scan_summary | 确认素材质量、信源覆盖、失败归因 |
-| capability-graph | capability-graph-barrier.md | Step 05 完成后 | capability-graph.json + dependency-graph.json | 确认能力图谱、依赖图、高地 |
-| evaluate-pool | evaluate-pool-barrier.md | Step 06 完成后 | evaluations.json | 确认评估结果、优先级、后处理范围 |
-| capability-research | capability-research-barrier.md | Step 07 完成后 | capabilities/*.md + summaries/*.json | 审查能力主文件与摘要质量 |
-| briefing-assemble | briefing-assemble-barrier.md | Step 08 完成后 | .meta/briefings/*.md | 审查 Briefing 素材提取完整性 |
-| assemble | assemble-barrier.md | Step 09 完成后 | 命题目录文件 | 审查组装质量 |
-| learning-ladder | learning-ladder-barrier.md | Step 10 完成后 | learning-ladder.md | 确认最终学习阶梯与交付 |
+| initialize | initialize-barrier.md | 初始化完成后 | init.json + run.json | 确认 workDir、运行信封 |
+| intent-anchor | intent-anchor-barrier.md | 意图锚定完成后 | anchors.json | 确认年限推断、锚点、跳过判断 |
+| brainstorm | brainstorm-barrier.md | 头脑风暴完成后 | requirement-web.json | 确认需求网、命题/能力/依赖/排除项 |
+| partition | partition-barrier.md | 依赖分区完成后 | partition-analysis.json + execution-plan.md | 确认分区方案、执行计划 |
+| scan | scan-barrier.md | 扫描完成后 | index.json + scan_summary | 确认素材质量、信源覆盖、失败归因 |
+| capability-graph | capability-graph-barrier.md | 能力图谱完成后 | capability-graph.json + dependency-graph.json | 确认能力图谱、依赖图、高地 |
+| evaluate-pool | evaluate-pool-barrier.md | 评估入池完成后 | evaluations.json | 确认评估结果、优先级、后处理范围 |
+| capability-research | capability-research-barrier.md | 能力研究完成后 | capabilities/*.md + summaries/*.json | 审查能力主文件与摘要质量 |
+| briefing-assemble | briefing-assemble-barrier.md | Briefing 组装完成后 | .meta/briefings/*.md | 审查 Briefing 素材提取完整性 |
+| assemble | assemble-barrier.md | 命题组装完成后 | 命题目录文件 | 审查组装质量 |
+| learning-ladder | learning-ladder-barrier.md | 学习阶梯完成后 | learning-ladder.md | 确认最终学习阶梯与交付 |
 
 ## 跳过条件
 
