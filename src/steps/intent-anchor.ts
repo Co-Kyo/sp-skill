@@ -10,10 +10,10 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
   .summary('解析用户指令，推断年限，生成共享骨架')
   .dependsOn('initialize')
   .reads(
-    { path: 'assets/00-intent-anchor/schemas.md', description: 'anchors 格式', required: true },
-    refs.yearRules,
-    refs.skipRules,
-    refs.strategyLevel,
+    { path: 'assets/00-intent-anchor/schemas.md', description: 'anchors 格式', required: true, as: 'contract' },
+    { ...refs.yearRules, as: 'contract' },
+    { ...refs.skipRules, as: 'contract' },
+    { ...refs.strategyLevel, as: 'contract' },
   )
   .writes(refs.anchors)
   .inputs('raw_input')
@@ -24,12 +24,8 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
   .outputs('{workDir}/.meta/brainstorm/anchors.json')
   .detail(intent.detail())
   .section('跳过判断', intent.skipSection())
-  .contractRefs(
-    { path: 'assets/00-intent-anchor/schemas.md', description: 'anchors 格式' },
-    refs.yearRules,
-    refs.skipRules,
-    refs.strategyLevel,
-  )
+  // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
+  // 本步 reads 全为契约文档（assets/ 下），统一标 as:'contract'。
   .taskTemplate(
     '锚点生成',
     intent.anchorTask(),

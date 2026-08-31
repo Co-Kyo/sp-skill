@@ -12,12 +12,9 @@ export const scan = step('scan', '广域扫描')
   .reads(
     refs.requirementWeb,
     { ...refs.partitionAnalysis, required: false },
-    refs.schemasScan,
-    refs.refSources,
-    refs.strategyLevel,
-    refs.protocolScheduling,
-    refs.pipelineParams,
-    refs.subagentBudget,
+    { ...refs.schemasScan, as: 'contract' },
+    { ...refs.refSources, as: 'contract' },
+    { ...refs.strategyLevel, as: 'contract' },
     refs.antiCrawlFetch,
   )
   .writes(refs.scanIndex, refs.scanMaterials)
@@ -36,14 +33,9 @@ export const scan = step('scan', '广域扫描')
   .section('Phase C 执行细节', scanRules.phaseCSection())
   .section('检查点', scanRules.checkpointSection())
   .section('输出 Schema', scanRules.outputSchema())
-  .contractRefs(
-    refs.schemasScan,
-    refs.refSources,
-    refs.strategyLevel,
-    refs.protocolScheduling,
-    refs.pipelineParams,
-    refs.antiCrawlFetch,
-  )
+  // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
+  // 8.13/8.14 裁定：protocolScheduling/pipelineParams/subagentBudget 为调度策略，
+  // 不进 reads，标记待迁移 meta.schedulingPolicy（独立里程碑）。
   .taskTemplate(
     '搜索 Agent',
     scanRules.searchTask(),

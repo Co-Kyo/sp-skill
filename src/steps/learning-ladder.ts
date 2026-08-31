@@ -24,14 +24,8 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
   .detail(ladderDetail())
   .section('步骤格式', stepFormat())
   .section('效果契约', effectContractSection('E-ladder-judgment'))
-  .contractRefs(
-    refs.dependencyGraph,
-    refs.summaries,
-    refs.overview,
-    refs.subagentBudget,
-    refs.ladder,
-    refs.anchors,
-  )
+  // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
+  // contractRefs 内 ladder 实为 writes 产物，不进 reads；subagentBudget 为调度策略，标记待迁 meta.schedulingPolicy。
   .taskTemplate(
     '学习阶梯 Worker',
     workerTask(),

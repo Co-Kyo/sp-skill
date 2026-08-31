@@ -17,12 +17,8 @@ export const briefingAssemble = step('briefing-assemble', 'Briefing 组装')
   .detail(briefing.detail())
   .section('内容比例', briefing.contentRatio())
   .section('效果契约', effectContractSection('E-briefing-trace'))
-  .contractRefs(
-    refs.requirementWeb,
-    refs.summaries,
-    refs.subagentBudget,
-    refs.briefing,
-  )
+  // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
+  // contractRefs 内 briefing 实为 writes 产物，不进 reads；subagentBudget 为调度策略，标记待迁 meta.schedulingPolicy。
   .taskTemplate(
     'Briefing Worker',
     briefing.workerTask(),

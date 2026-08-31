@@ -12,14 +12,10 @@ export const brainstorm = step('brainstorm', '头脑风暴')
   .dependsOn('intent-anchor')
   .reads(
     refs.anchors,
-    refs.agentInit,
-    refs.schedulingDetail,
-    refs.barrierCheck,
-    refs.fallbackProtocol,
-    refs.protocolScheduling,
-    refs.pipelineParams,
-    refs.subagentBudget,
-    refs.brainstormSchemas,
+    { ...refs.agentInit, as: 'contract' },
+    { ...refs.barrierCheck, as: 'contract' },
+    { ...refs.fallbackProtocol, as: 'contract' },
+    { ...refs.brainstormSchemas, as: 'contract' },
   )
   .writes(refs.requirementWeb)
   .inputs('{workDir}/.meta/brainstorm/anchors.json')
@@ -27,15 +23,9 @@ export const brainstorm = step('brainstorm', '头脑风暴')
   .detail(brainstormRules.detail())
   .section('质量门禁', brainstormRules.qualityGateSection())
   .section('{{step:scan}} 注入', brainstormRules.scanInjectSection())
-  .contractRefs(
-    refs.agentInit,
-    refs.schedulingDetail,
-    refs.barrierCheck,
-    refs.fallbackProtocol,
-    refs.protocolScheduling,
-    refs.pipelineParams,
-    refs.brainstormSchemas,
-  )
+  // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
+  // 8.13/8.14 裁定：schedulingDetail/protocolScheduling/pipelineParams/subagentBudget 为调度策略，
+  // 不进 reads，标记待迁移 meta.schedulingPolicy（独立里程碑）。
   .taskTemplate(
     '场景维度',
     brainstormRules.scenarioTask(),

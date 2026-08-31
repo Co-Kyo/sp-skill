@@ -25,18 +25,9 @@ export const assemble = step('assemble', '命题组装')
   .section('Markdown Agent', assembly.markdownAgent())
   .section('Experiment Agent', assembly.experimentAgent())
   .section('效果契约', effectContractSection('E-assemble-ratio'))
-  .contractRefs(
-    refs.briefing,
-    refs.requirementWeb,
-    refs.capabilityGraph,
-    refs.overview,
-    refs.edgeCases,
-    refs.tradeoffs,
-    refs.references,
-    refs.experiment,
-    refs.assemblyRatioTrace,
-    refs.subagentBudget,
-  )
+  // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
+  // 8.13 浮出条目裁决：contractRefs 内的 overview/edgeCases/tradeoffs/references/experiment/assemblyRatioTrace
+  // 实为 writes 产物（非读取），不进 reads；subagentBudget 为调度策略，暂缓 + 标记待迁 meta.schedulingPolicy。
   .taskTemplate(
     'Markdown Agent',
     assembly.markdownAgentTask(),

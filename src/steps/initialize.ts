@@ -8,7 +8,8 @@ import { fail, verify } from '../verify.js';
 export const initialize = step('initialize', '初始化')
   .target('确认 workDir 并建立可追溯的初始化记录')
   .summary('确认 workDir（交互步骤），各步骤按需加载公共规则')
-  .dependsOn()
+  // 8.4 迁移：dependsOn 收窄为单值。initialize 是链起点（root），无前驱，
+  // 省略 dependsOn 由框架推导（deriveInitStepId 从链起点推导 initStepId）。
   .writes(
     { path: '{workDir}/.meta/init.json', description: '初始化记录', required: true },
     refs.run,

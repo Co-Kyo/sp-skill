@@ -10,7 +10,7 @@ export const capabilityResearch = step('capability-research', '能力研究')
   .target('生成能力知识库主文件、结构化摘要和索引')
   .summary('深度研究原子能力，产出知识库主文件')
   .dependsOn('evaluate-pool')
-  .reads(refs.capabilityGraph, refs.readme, refs.refSources, refs.scanIndex)
+  .reads(refs.capabilityGraph, refs.readme, { ...refs.refSources, as: 'contract' }, refs.scanIndex)
   .writes(refs.researchPlan, refs.capabilities, refs.summaries, refs.capabilitiesReadme)
   .inputs('{workDir}/.meta/capability-graph.json', '{workDir}/README.md', '{workDir}/.meta/.raw-materials/index.json')
   .outputs('{workDir}/.meta/research-plan.json', '{workDir}/capabilities/*.md', '{workDir}/.meta/summaries/*.json', '{workDir}/capabilities/README.md')
@@ -18,17 +18,9 @@ export const capabilityResearch = step('capability-research', '能力研究')
   .section('域 Agent 任务', research.domainAgentTask())
   .section('素材分配与 usage trace', research.materialAllocation())
   .section('效果契约', effectContractSection('E-capability-coverage'))
-  .contractRefs(
-    refs.capabilityGraph,
-    refs.readme,
-    refs.refSources,
-    refs.scanIndex,
-    refs.researchPlan,
-    refs.subagentBudget,
-    refs.capabilities,
-    refs.summaries,
-    refs.capabilitiesReadme,
-  )
+  // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
+  // contractRefs 内 researchPlan/capabilities/summaries/capabilitiesReadme 实为 writes 产物，不进 reads；
+  // subagentBudget 为调度策略，标记待迁 meta.schedulingPolicy。
   .taskTemplate(
     '域 Agent 任务',
     research.domainAgentTemplate(),
