@@ -17,9 +17,8 @@ export const phaseDefs: { name: string; stepIds: string[]; description: string }
   { name: '后处理', stepIds: ['capability-research', 'briefing-assemble', 'assemble', 'learning-ladder'], description: '串行研究、Briefing、组装、学习阶梯' },
 ];
 
-// B10-A:区间标注修正,与 phases 边界一致(6 阶段 6 标注;原 (03-05)/(06-10) 错位已登记修正)
-export const flowOverview = `初始化 → 意图锚定 → 头脑风暴 → 依赖分区 → 前处理 → 后处理
-         (00)      (01)      (02)      (03)      (04-06)   (07-10)`;
+// B10-A 已退役：flowOverview 现由 skillnomad 构建期派生（deriveFlowOverview），
+// 手写副本删除——"标注与边界一致"是派生的定义而非待守卫的约束。
 
 const model: SkillSourceModel = {
   meta: {
@@ -45,7 +44,6 @@ const model: SkillSourceModel = {
     ],
     phases: phaseDefs,
     initStepId: 'initialize',
-    flowOverview,
   },
   contracts,
   policies,
