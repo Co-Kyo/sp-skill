@@ -75,7 +75,6 @@ export const scan = step('scan', '广域扫描')
     ),
   )
   .plugins('anti-crawl-fetch', 'year-granularity')
-  .next('capability-graph')
   .display({
     pattern: 'coverage_cards',
     primary_unit: 'batch',

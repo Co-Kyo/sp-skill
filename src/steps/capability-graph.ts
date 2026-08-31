@@ -52,7 +52,6 @@ export const capabilityGraph = step('capability-graph', '能力图谱')
       '请确认能力图谱质量。',
     ),
   )
-  .next('evaluate-pool')
   .display(displayFoldMulti('capability'))
   .seq('capability-graph-seq', '能力图谱构建', [
     doAction('merge', 'capability-dedupe', '能力去重', '跨命题合并或拆分能力，并记录 merge/split trace。', 5),

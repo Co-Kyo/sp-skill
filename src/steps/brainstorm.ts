@@ -111,7 +111,6 @@ export const brainstorm = step('brainstorm', '头脑风暴')
     barrier_summary: '当前阶段：需求网确认；本次确认：命题/年限/排除边界；下一步：分区确认；命题 10，年限 L2，排除项 20；10/10 已选。',
   })
   .plugins('year-granularity')
-  .next('partition')
   .parallel(
     'brainstorm-parallel',
     '4 维度并行分析',

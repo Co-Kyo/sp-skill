@@ -1,7 +1,6 @@
 import type { SkillSourceModel } from 'skillnomad-types';
 import { createSkillFromModel } from 'skillnomad';
 import { contracts } from './src/contracts.js';
-import { HEAD_SESSION_FLOW } from './src/domain/session.js';
 import { policies } from './src/policies.js';
 import { steps } from './src/steps/index.js';
 
@@ -10,11 +9,11 @@ import { steps } from './src/steps/index.js';
 const summaryOf = (id: string) => steps.find((s) => s.id === id)?.summary ?? '';
 
 export const phaseDefs: { name: string; stepIds: string[]; description: string }[] = [
-  { name: '初始化', stepIds: [HEAD_SESSION_FLOW[0]], description: summaryOf('initialize') },
-  { name: '意图锚定', stepIds: [HEAD_SESSION_FLOW[1]], description: summaryOf('intent-anchor') },
-  { name: '头脑风暴', stepIds: [HEAD_SESSION_FLOW[2]], description: summaryOf('brainstorm') },
-  { name: '依赖分区', stepIds: [HEAD_SESSION_FLOW[3]], description: summaryOf('partition') },
-  { name: '前处理', stepIds: [...HEAD_SESSION_FLOW.slice(4)], description: '串行扫描、建图、评估入池' },
+  { name: '初始化', stepIds: ['initialize'], description: summaryOf('initialize') },
+  { name: '意图锚定', stepIds: ['intent-anchor'], description: summaryOf('intent-anchor') },
+  { name: '头脑风暴', stepIds: ['brainstorm'], description: summaryOf('brainstorm') },
+  { name: '依赖分区', stepIds: ['partition'], description: summaryOf('partition') },
+  { name: '前处理', stepIds: ['scan', 'capability-graph', 'evaluate-pool'], description: '串行扫描、建图、评估入池' },
   { name: '后处理', stepIds: ['capability-research', 'briefing-assemble', 'assemble', 'learning-ladder'], description: '串行研究、Briefing、组装、学习阶梯' },
 ];
 

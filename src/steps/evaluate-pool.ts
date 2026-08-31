@@ -48,7 +48,6 @@ export const evaluatePool = step('evaluate-pool', '评估入池')
     ),
   )
   .plugins('year-granularity')
-  .next('capability-research')
   .display({
     pattern: 'threshold_table',
     primary_unit: 'proposition',

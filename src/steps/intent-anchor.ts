@@ -49,6 +49,5 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
       '请确认意图锚定结果、年限推断和跳过判断。',
     ),
   )
-  .next('brainstorm')
   .display(displayFoldMulti('anchor'))
   .build();

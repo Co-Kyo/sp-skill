@@ -39,7 +39,6 @@ export const initialize = step('initialize', '初始化')
       '请确认 workDir 与初始化规则。',
     ),
   )
-  .next('intent-anchor')
   .display({
     pattern: 'generic',
     primary_unit: 'rule',

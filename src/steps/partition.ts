@@ -45,7 +45,6 @@ export const partition = step('partition', '依赖分区')
       '请确认分区方案和本次执行计划。',
     ),
   )
-  .next('scan')
   .display({
     pattern: 'partition_cards',
     primary_unit: 'batch',
