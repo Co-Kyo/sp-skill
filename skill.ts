@@ -1,7 +1,7 @@
 import type { SkillSourceModel } from 'skillnomad-types';
 import { createSkillFromModel } from 'skillnomad';
 import { contracts } from './src/contracts.js';
-import { HEAD_SESSION_FLOW, TAIL_SESSION_FLOW } from './src/domain/session.js';
+import { HEAD_SESSION_FLOW } from './src/domain/session.js';
 import { policies } from './src/policies.js';
 import { steps } from './src/steps/index.js';
 
@@ -15,7 +15,7 @@ export const phaseDefs: { name: string; stepIds: string[]; description: string }
   { name: '头脑风暴', stepIds: [HEAD_SESSION_FLOW[2]], description: summaryOf('brainstorm') },
   { name: '依赖分区', stepIds: [HEAD_SESSION_FLOW[3]], description: summaryOf('partition') },
   { name: '前处理', stepIds: [...HEAD_SESSION_FLOW.slice(4)], description: '串行扫描、建图、评估入池' },
-  { name: '后处理', stepIds: [...TAIL_SESSION_FLOW], description: '串行研究、Briefing、组装、学习阶梯' },
+  { name: '后处理', stepIds: ['capability-research', 'briefing-assemble', 'assemble', 'learning-ladder'], description: '串行研究、Briefing、组装、学习阶梯' },
 ];
 
 // B10-A:区间标注修正,与 phases 边界一致(6 阶段 6 标注;原 (03-05)/(06-10) 错位已登记修正)

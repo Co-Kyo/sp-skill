@@ -1,16 +1,7 @@
 // 学习域:学习会话聚合。
-// 结尾四步的推进顺序是领域知识,步骤定义通过 prevStep/nextStep 引用,
-// 顺序只在此处声明一次(收敛点)。
-export const TAIL_SESSION_FLOW = [
-  'capability-research',
-  'briefing-assemble',
-  'assemble',
-  'learning-ladder',
-] as const;
-
-export type TailSessionStage = (typeof TAIL_SESSION_FLOW)[number];
-
-// Phase II(D8 扩展):前处理七步的会话顺序,与 TAIL_SESSION_FLOW 合成 11 步全序
+// Phase II(D8 扩展):前处理七步的会话顺序,与后四步合成 11 步全序。
+// 阶段 2 Step A 后:后四步的顺序已下沉为步骤自身的 dependsOn 声明,
+// EDGES 查表(prevStep/nextStep)已删除;本文件仅保留前处理七步的会话顺序。
 export const HEAD_SESSION_FLOW = [
   'initialize',
   'intent-anchor',
@@ -22,18 +13,3 @@ export const HEAD_SESSION_FLOW = [
 ] as const;
 
 export type HeadSessionStage = (typeof HEAD_SESSION_FLOW)[number];
-
-const EDGES: Record<TailSessionStage, { prev: string; next: string }> = {
-  'capability-research': { prev: 'evaluate-pool', next: 'briefing-assemble' },
-  'briefing-assemble': { prev: 'capability-research', next: 'assemble' },
-  assemble: { prev: 'briefing-assemble', next: 'learning-ladder' },
-  'learning-ladder': { prev: 'assemble', next: 'done' },
-};
-
-export function prevStep(stage: TailSessionStage): string {
-  return EDGES[stage].prev;
-}
-
-export function nextStep(stage: TailSessionStage): string {
-  return EDGES[stage].next;
-}

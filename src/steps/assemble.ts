@@ -2,7 +2,6 @@ import { step } from 'skillnomad-types';
 import { doAction } from '../actions.js';
 import { effectContractSection } from '../domain/effects.js';
 import { assembly } from '../domain/prompts.js';
-import { nextStep, prevStep } from '../domain/session.js';
 import { refs } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
@@ -10,7 +9,7 @@ import { fail, verify } from '../verify.js';
 export const assemble = step('assemble', '命题组装')
   .target('为每个命题生成四象限研究输出')
   .summary('组装四象限研究输出（overview/edge-cases/trade-offs/experiment）')
-  .dependsOn(prevStep('assemble'))
+  .dependsOn('briefing-assemble')
   .reads(refs.briefing, refs.requirementWeb, refs.capabilityGraph)
   .writes(refs.overview, refs.edgeCases, refs.tradeoffs, refs.references, refs.experiment, refs.assemblyRatioTrace)
   .inputs('{workDir}/.meta/briefings/{seq}-{short_name}.md')
@@ -66,7 +65,7 @@ export const assemble = step('assemble', '命题组装')
   .reuse(
     { ifExists: '{workDir}/{seq}-{short_name}/overview.md', skipDescription: '命题 overview 已存在' },
   )
-  .next(nextStep('assemble'))
+  
   .display({
     pattern: 'auto_timeline',
     primary_unit: 'stage',

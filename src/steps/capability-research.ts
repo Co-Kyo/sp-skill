@@ -2,7 +2,6 @@ import { step } from 'skillnomad-types';
 import { doAction } from '../actions.js';
 import { effectContractSection } from '../domain/effects.js';
 import { research } from '../domain/prompts.js';
-import { nextStep, prevStep } from '../domain/session.js';
 import { refs } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
@@ -10,7 +9,7 @@ import { fail, verify } from '../verify.js';
 export const capabilityResearch = step('capability-research', '能力研究')
   .target('生成能力知识库主文件、结构化摘要和索引')
   .summary('深度研究原子能力，产出知识库主文件')
-  .dependsOn(prevStep('capability-research'))
+  .dependsOn('evaluate-pool')
   .reads(refs.capabilityGraph, refs.readme, refs.refSources, refs.scanIndex)
   .writes(refs.researchPlan, refs.capabilities, refs.summaries, refs.capabilitiesReadme)
   .inputs('{workDir}/.meta/capability-graph.json', '{workDir}/README.md', '{workDir}/.meta/.raw-materials/index.json')
@@ -62,7 +61,7 @@ export const capabilityResearch = step('capability-research', '能力研究')
     { ifExists: '{workDir}/.meta/summaries/{id}-{name}.json', skipDescription: '能力摘要已存在' },
   )
   .plugins('capability-research-mode')
-  .next(nextStep('capability-research'))
+  
   .display({
     pattern: 'auto_timeline',
     primary_unit: 'stage',
