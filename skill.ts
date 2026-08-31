@@ -44,6 +44,22 @@ const model: SkillSourceModel = {
     ],
     phases: phaseDefs,
     initStepId: 'initialize',
+    // 8.13/8.14 下沉：调度策略为 skill 级全局口径，步骤不再各自登记（消除横切散布）。
+    // 数值来源：protocol-scheduling.md(并发 W=5) / subagent-budget.md(窗口预算/输入压缩) / pipeline-params.md(w)。
+    schedulingPolicy: {
+      concurrencyLimit: 5,
+      windowBudget: {
+        maxWindowSize: 4,
+        inputChunkTokens: 6000,
+        itemSummaryTokens: 500,
+      },
+      batchPolicy: {
+        mode: 'rolling_window',
+        maxBatchSize: 3,
+        slotOccupancy: 1,
+      },
+      note: '各步骤具体调度模式（批量并行/滚动窗口/拓扑分批）见 process 的「调度策略」章节；本字段为 skill 级全局口径（W=5）。',
+    },
   },
   contracts,
   policies,
