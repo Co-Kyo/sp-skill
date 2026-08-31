@@ -38,7 +38,9 @@ test('scan:密度表角色覆盖 detail 与 SCAN_DENSITY 一致', () => {
 });
 
 test('B1-A:outputSchema 与 assets/03-scan/schemas.md 正本逐块一致(漂移锁)', () => {
-  const asset = readFileSync(repoRoot + 'assets/03-scan/schemas.md', 'utf-8');
+  // 行尾归一:Windows checkout(autocrlf)会把正本转成 CRLF,源码模板是 LF,
+  // 行尾是格式不是内容——归一后再逐块比较,内容漂移仍会被锁捕获。
+  const asset = readFileSync(repoRoot + 'assets/03-scan/schemas.md', 'utf-8').replace(/\r\n/g, '\n');
   const blocks = (t: string) => t.split('```json').slice(1).map((b) => b.split('```')[0].trim());
   assert.deepEqual(blocks(outputSchema()), blocks(asset));
 });
