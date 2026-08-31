@@ -1,7 +1,7 @@
 import type {
   SourceCheckpoint,
   SourcePolicies,
-} from '@co-kyo/skillpack-types';
+} from 'skillnomad-types';
 
 export const policies: SourcePolicies = {
   contextIsolation: true,

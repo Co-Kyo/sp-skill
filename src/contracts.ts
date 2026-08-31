@@ -1,7 +1,7 @@
 import type {
   SourceContract,
   SourceRef,
-} from '@co-kyo/skillpack-types';
+} from 'skillnomad-types';
 
 export const refs = {
   run: { path: '{workDir}/.meta/run/run.json', description: '运行信封', required: true },

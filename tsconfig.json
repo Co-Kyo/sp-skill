@@ -12,7 +12,7 @@
     "noEmit": true
   },
   "include": [
-    "skillpack.config.ts",
+    "skillnomad.config.ts",
     "skill.ts",
     "src/**/*.ts"
   ]

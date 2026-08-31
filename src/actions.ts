@@ -2,7 +2,7 @@ import type {
   NextAction,
   SourceAction,
   SourceFlow,
-} from '@co-kyo/skillpack-types';
+} from 'skillnomad-types';
 
 export function agentAction(
   verb: NextAction,

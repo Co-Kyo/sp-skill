@@ -1,5 +1,5 @@
-import type { SkillSourceModel } from '@co-kyo/skillpack-types';
-import { createSkillFromModel } from '@co-kyo/skillpack';
+import type { SkillSourceModel } from 'skillnomad-types';
+import { createSkillFromModel } from 'skillnomad';
 import { contracts } from './src/contracts.js';
 import { HEAD_SESSION_FLOW, TAIL_SESSION_FLOW } from './src/domain/session.js';
 import { policies } from './src/policies.js';

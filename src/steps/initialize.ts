@@ -1,4 +1,4 @@
-import { step } from '@co-kyo/skillpack-types';
+import { step } from 'skillnomad-types';
 import { initializeDetail, WORKDIR_NAMING } from '../domain/content/initialize.js';
 import { verifyPair } from '../domain/mechanics.js';
 import { refs } from '../contracts.js';

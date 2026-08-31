@@ -1,4 +1,4 @@
-import { defineConfig } from '@co-kyo/skillpack';
+import { defineConfig } from 'skillnomad';
 
 export default defineConfig({
   skill: './skill.ts',

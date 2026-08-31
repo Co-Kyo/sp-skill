@@ -1,4 +1,4 @@
-import { step } from '@co-kyo/skillpack-types';
+import { step } from 'skillnomad-types';
 import * as intent from '../domain/content/intent.js';
 import { displayFoldMulti } from '../domain/mechanics.js';
 import { refs } from '../contracts.js';

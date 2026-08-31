@@ -1,4 +1,4 @@
-import { step } from '@co-kyo/skillpack-types';
+import { step } from 'skillnomad-types';
 import { doAction } from '../actions.js';
 import * as evaluation from '../domain/content/evaluation.js';
 import { refs } from '../contracts.js';

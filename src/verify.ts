@@ -1,7 +1,7 @@
 import type {
   SourceFailRule,
   SourceVerifyRule,
-} from '@co-kyo/skillpack-types';
+} from 'skillnomad-types';
 
 export const verify = {
   file: (ref: string, description: string): SourceVerifyRule => ({

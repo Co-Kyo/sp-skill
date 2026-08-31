@@ -4,13 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsx node_modules/@co-kyo/skillpack/dist/bin/cli.js build skillpack.config.ts",
+    "build": "tsx node_modules/skillnomad/dist/bin/cli.js build skillnomad.config.ts",
     "typecheck": "tsc -p tsconfig.json",
     "test": "node --import tsx --test src/domain/ladder.test.ts src/domain/session.test.ts src/domain/effects.test.ts src/domain/learner.test.ts src/steps/flow.test.ts src/domain/content/content.test.ts src/domain/content/brainstorm.test.ts src/domain/content/scan.test.ts src/domain/numbering-governance.test.ts"
   },
   "dependencies": {
-    "@co-kyo/skillpack": "^0.2.0",
-    "@co-kyo/skillpack-types": "^0.2.0"
+    "skillnomad": "^0.1.0-beta.2",
+    "skillnomad-types": "^0.1.0-beta.2"
   },
   "devDependencies": {
     "@types/node": "^26.1.0",

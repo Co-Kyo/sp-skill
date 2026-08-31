@@ -1,4 +1,4 @@
-import type { SourceStep } from '@co-kyo/skillpack-types';
+import type { SourceStep } from 'skillnomad-types';
 import { initialize } from './initialize.js';
 import { intentAnchor } from './intent-anchor.js';
 import { brainstorm } from './brainstorm.js';

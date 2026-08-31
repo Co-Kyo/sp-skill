@@ -4,7 +4,7 @@ import { phaseDefs, flowOverview } from '../../skill.js';
 import { HEAD_SESSION_FLOW, TAIL_SESSION_FLOW } from '../domain/session.js';
 import { steps } from './index.js';
 
-// D8:顺序一致性——防止 .next()/dependsOn 静默断链(skillpack 只校验 dependsOn,不校验 next)
+// D8:顺序一致性——防止 .next()/dependsOn 静默断链(skillnomad 只校验 dependsOn,不校验 next)
 test('D8:11 步链连续——每步 next 指向下一步,末步指向 done', () => {
   for (let i = 0; i < steps.length - 1; i++) {
     assert.equal(steps[i].next, steps[i + 1].id, `第 ${i} 步(${steps[i].id})next 断链`);
