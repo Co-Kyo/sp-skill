@@ -2,7 +2,8 @@ import { step } from 'skillnomad';
 import { agentAction, doAction } from '../actions.js';
 import * as brainstormRules from '../domain/content/brainstorm.js';
 import { displayFoldMulti } from '../domain/mechanics.js';
-import { runtime, modules } from '../contracts.js';
+import { modules } from '../contracts.js';
+import { refOf, schemaRef } from '../domain/entities.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -11,15 +12,15 @@ export const brainstorm = step('brainstorm', '头脑风暴')
   .summary('4维度Agent并行分析，产出结构化需求网')
   .dependsOn('intent-anchor')
   .reads(
-    runtime.anchors,
+    refOf('anchors'),
     { ...modules.agentInit, as: 'rule' },
     { ...modules.barrierCheck, as: 'rule' },
     { ...modules.fallbackProtocol, as: 'rule' },
-    { ...modules.brainstormSchemas, as: 'schema' },
+    { ...schemaRef('requirementWeb'), as: 'schema' },
   )
-  .writes(runtime.requirementWeb)
-  .inputs('{workDir}/.meta/brainstorm/anchors.json')
-  .outputs('{workDir}/.meta/requirement-web.json')
+  .writes(refOf('requirementWeb'))
+  .inputs(refOf('anchors').path)
+  .outputs(refOf('requirementWeb').path)
   .detail(brainstormRules.detail())
   .section('质量门禁', brainstormRules.qualityGateSection())
   .section('{{step:scan}} 注入', brainstormRules.scanInjectSection())
@@ -47,7 +48,7 @@ export const brainstorm = step('brainstorm', '头脑风暴')
     brainstormRules.integratorTask(),
   )
   .verify(
-    verify.json('{workDir}/.meta/requirement-web.json', 'requirement-web.json 可解析'),
+    verify.json(refOf('requirementWeb').path, 'requirement-web.json 可解析'),
     verify.field('context', 'context 包含 target_level、year_source、year_inference_trace'),
     verify.field('id', '每个 proposition 包含 id'),
     verify.field('name', '每个 proposition 包含 name'),

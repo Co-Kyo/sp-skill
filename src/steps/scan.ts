@@ -1,6 +1,7 @@
 import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
-import { runtime, modules } from '../contracts.js';
+import { modules } from '../contracts.js';
+import { refOf, schemaRef } from '../domain/entities.js';
 import * as scanRules from '../domain/content/scan.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
@@ -10,22 +11,22 @@ export const scan = step('scan', '广域扫描')
   .summary('按level_weight差异化搜索信源，结构化提取')
   .dependsOn('partition')
   .reads(
-    runtime.requirementWeb,
-    { ...runtime.partitionAnalysis, required: false },
-    { ...modules.schemasScan, as: 'schema' },
+    refOf('requirementWeb'),
+    { ...refOf('partitionAnalysis'), required: false },
+    { ...schemaRef('scanIndex'), as: 'schema' },
     { ...modules.refSources, as: 'contract' },
     { ...modules.strategyLevel, as: 'contract' },
     modules.antiCrawlFetch,
   )
-  .writes(runtime.scanIndex, runtime.scanMaterials)
+  .writes(refOf('scanIndex'), refOf('scanMaterials'))
   .inputs(
     'source_desc',
     'topic',
     '--year / --source 可选约束',
-    '{workDir}/.meta/requirement-web.json',
+    refOf('requirementWeb').path,
     '可选 {workDir}/.meta/partition-analysis.json',
   )
-  .outputs('{workDir}/.meta/.raw-materials/index.json', '{workDir}/.meta/.raw-materials/*.md')
+  .outputs(refOf('scanIndex').path, refOf('scanMaterials').path)
   .detail(scanRules.detail())
   .section('URL 盘点与策略分配', scanRules.urlPreflightSection())
   .section('Phase A 执行细节', scanRules.phaseASection())
@@ -45,8 +46,8 @@ export const scan = step('scan', '广域扫描')
     scanRules.extractTask(),
   )
   .verify(
-    verify.file('{workDir}/.meta/.raw-materials/index.json', 'index.json 已生成'),
-    verify.json('{workDir}/.meta/.raw-materials/index.json', 'index.json 可解析'),
+    verify.file(refOf('scanIndex').path, 'index.json 已生成'),
+    verify.json(refOf('scanIndex').path, 'index.json 可解析'),
     verify.field('file_path', '每条 material 有 file_path'),
     verify.field('fetch_status', '反爬抓取状态已记录'),
   )

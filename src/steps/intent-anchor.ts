@@ -1,7 +1,8 @@
 import { step } from 'skillnomad';
 import * as intent from '../domain/content/intent.js';
 import { displayFoldMulti } from '../domain/mechanics.js';
-import { runtime, modules } from '../contracts.js';
+import { modules } from '../contracts.js';
+import { refOf, schemaRef } from '../domain/entities.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -10,18 +11,18 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
   .summary('解析用户指令，推断年限，生成共享骨架')
   .dependsOn('initialize')
   .reads(
-    { ...modules.intentAnchorSchemas, as: 'schema' },
+    { ...schemaRef('anchors'), as: 'schema' },
     { ...modules.yearRules, as: 'rule' },
     { ...modules.skipRules, as: 'rule' },
     { ...modules.strategyLevel, as: 'contract' },
   )
-  .writes(runtime.anchors)
+  .writes(refOf('anchors'))
   .inputs('raw_input')
   .action('parse', 'intent-extract', '轻量提取', '提取 topic、tech_stack 和显式年限参数。')
   .action('infer', 'intent-year', '年限推断', '按优先级链推断 target_level 并记录 year_inference_trace。')
   .action('validate', 'intent-skip', '跳过判断', '判断是否跳过头脑风暴。')
   .action('generate', 'intent-anchor-write', '生成骨架', '生成锚点并注入 strategy 元数据。')
-  .outputs('{workDir}/.meta/brainstorm/anchors.json')
+  .outputs(refOf('anchors').path)
   .detail(intent.detail())
   .section('跳过判断', intent.skipSection())
   // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。

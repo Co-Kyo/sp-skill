@@ -2,7 +2,8 @@ import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import * as capability from '../domain/content/capability.js';
 import { displayFoldMulti } from '../domain/mechanics.js';
-import { runtime, modules } from '../contracts.js';
+import { modules } from '../contracts.js';
+import { refOf, schemaRef } from '../domain/entities.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -10,14 +11,14 @@ export const capabilityGraph = step('capability-graph', '能力图谱')
   .target('生成能力图谱、依赖图、战略高地与学习路径')
   .summary('跨命题去重合并原子能力，计算战略价值')
   .dependsOn('scan')
-  .reads(runtime.requirementWeb, runtime.scanIndex)
-  .writes(runtime.capabilityGraph, runtime.dependencyGraph, runtime.highgrounds, runtime.learningPath)
-  .inputs('{workDir}/.meta/requirement-web.json', '{workDir}/.meta/.raw-materials/index.json')
+  .reads(refOf('requirementWeb'), refOf('scanIndex'))
+  .writes(refOf('capabilityGraph'), refOf('dependencyGraph'), refOf('highgrounds'), refOf('learningPath'))
+  .inputs(refOf('requirementWeb').path, refOf('scanIndex').path)
   .outputs(
-    '{workDir}/.meta/capability-graph.json',
-    '{workDir}/.meta/dependency-graph.json',
-    '{workDir}/.meta/highgrounds.json',
-    '{workDir}/.meta/learning-path.json',
+    refOf('capabilityGraph').path,
+    refOf('dependencyGraph').path,
+    refOf('highgrounds').path,
+    refOf('learningPath').path,
   )
   .detail(capability.detail())
   .section('战略高地', capability.highgroundSection())
@@ -32,7 +33,7 @@ export const capabilityGraph = step('capability-graph', '能力图谱')
     capability.highgroundTask(),
   )
   .verify(
-    verify.json('{workDir}/.meta/capability-graph.json', '能力图谱可解析'),
+    verify.json(refOf('capabilityGraph').path, '能力图谱可解析'),
     verify.field('dependencies_trace', '非空依赖包含 dependencies_trace'),
     verify.field('t0_missing', 'T0 参考状态已记录'),
   )

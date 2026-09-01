@@ -1,7 +1,8 @@
 import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import * as evaluation from '../domain/content/evaluation.js';
-import { runtime, modules } from '../contracts.js';
+import { modules } from '../contracts.js';
+import { refOf, schemaRef } from '../domain/entities.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -9,10 +10,10 @@ export const evaluatePool = step('evaluate-pool', '评估入池')
   .target('生成按年限阈值入池的评估结果与推荐顺序')
   .summary('四维评估矩阵打分，确定优先级和学习顺序')
   .dependsOn('capability-graph')
-  .reads(runtime.capabilityGraph, runtime.dependencyGraph, { ...modules.evaluationMethod, as: 'method' })
-  .writes(runtime.evaluations, runtime.readme, runtime.candidates)
-  .inputs('{workDir}/.meta/capability-graph.json', '{workDir}/.meta/dependency-graph.json')
-  .outputs('{workDir}/.meta/evaluations.json', '{workDir}/README.md', '{workDir}/.meta/candidates.md')
+  .reads(refOf('capabilityGraph'), refOf('dependencyGraph'), { ...modules.evaluationMethod, as: 'method' })
+  .writes(refOf('evaluations'), refOf('readme'), refOf('candidates'))
+  .inputs(refOf('capabilityGraph').path, refOf('dependencyGraph').path)
+  .outputs(refOf('evaluations').path, refOf('readme').path, refOf('candidates').path)
   .detail(evaluation.detail())
   .section('年限阈值', evaluation.thresholdSection())
   // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
@@ -26,8 +27,8 @@ export const evaluatePool = step('evaluate-pool', '评估入池')
     evaluation.archiveTask(),
   )
   .verify(
-    verify.file('{workDir}/README.md', '命题总览存在'),
-    verify.json('{workDir}/.meta/evaluations.json', '评估结果可解析'),
+    verify.file(refOf('readme').path, '命题总览存在'),
+    verify.json(refOf('evaluations').path, '评估结果可解析'),
     verify.field('priority_trace', '每个命题包含 priority_trace'),
     verify.field('recommended_order', '推荐顺序合理'),
   )

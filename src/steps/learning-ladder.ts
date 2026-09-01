@@ -9,7 +9,9 @@ import {
   stepFormat,
   workerTask,
 } from '../domain/ladder.js';
-import { runtime, modules } from '../contracts.js';
+import { modules } from '../contracts.js';
+import { refOf, schemaRef } from '../domain/entities.js';
+
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -17,10 +19,10 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
   .target('为每个命题生成从不会到能讲的渐进学习路径')
   .summary('生成从"不会"到"能讲"的渐进式路径')
   .dependsOn('assemble')
-  .reads(runtime.dependencyGraph, runtime.summaries, runtime.overview, runtime.anchors)
-  .writes(runtime.ladder)
-  .inputs('{workDir}/.meta/dependency-graph.json', '{workDir}/.meta/summaries/*.json', '{workDir}/{seq}-{short_name}/overview.md')
-  .outputs('{workDir}/{seq}-{short_name}/learning-ladder.md')
+  .reads(refOf('dependencyGraph'), refOf('summaries'), refOf('overview'), refOf('anchors'))
+  .writes(refOf('ladder'))
+  .inputs(refOf('dependencyGraph').path, refOf('summaries').path, refOf('overview').path)
+  .outputs(refOf('ladder').path)
   .detail(ladderDetail())
   .section('步骤格式', stepFormat())
   .section('效果契约', effectContractSection('E-ladder-judgment'))
@@ -31,7 +33,7 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
     workerTask(),
   )
   .verify(
-    verify.file('{workDir}/{seq}-{short_name}/learning-ladder.md', '学习阶梯文件存在'),
+    verify.file(refOf('ladder').path, '学习阶梯文件存在'),
     verify.count(`阶段数 ${LADDER_STAGE_COUNT.min}-${LADDER_STAGE_COUNT.max}`),
     verify.field(LADDER_JUDGMENT_FIELD, '每步有二值验证标准'),
   )
@@ -46,7 +48,7 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
     ),
   )
   .reuse(
-    { ifExists: '{workDir}/{seq}-{short_name}/learning-ladder.md', skipDescription: '学习阶梯已存在' },
+    { ifExists: refOf('ladder').path, skipDescription: '学习阶梯已存在' },
   )
   
   .display({
@@ -59,7 +61,7 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
   .map(
     'learning-ladder-map',
     '学习阶梯滚动窗口',
-    { path: '{workDir}/.meta/requirement-web.json#propositions', dynamic: true },
+    { path: refOf('requirementWeb').path + '#propositions', dynamic: true },
     doAction(
       'generate',
       'learning-ladder-worker',

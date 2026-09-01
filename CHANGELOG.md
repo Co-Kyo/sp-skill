@@ -1,5 +1,13 @@
 # Changelog
 
+## post-v1.4.0（8.16 产物路径投射，beta.9 配套）
+
+- **产物实体声明**：新建 `src/domain/entities.ts`（27 条实体：8 组领域概念 + 机制产物，含 `init.json` 补漏）；`refOf`/`schemaRef` 概念引用辅助。
+- **步骤层路径字面量清零**：reads/writes/inputs/outputs/map-over/verify/reuse 全部改概念引用（`refOf('xxx').path`）；代码级 `{workDir}` 字面量 0（仅提示词文本保留）。
+- **contracts.ts**：runtime 表删除；modules 12→9（3 个 schemas 挂实体，③A）；注册表同步。
+- **effects 同源**：4 条 EFFECT_CONTRACTS artifact 从实体取值（ladder 双写消失）。
+- 验收：typecheck ✓ · 44 测试 ✓ · 产物 = 预期修正性变化（2 处 description 精化）· 依赖 skillnomad beta.9 候选。
+
 ## post-v1.4.0（8.15 模块抽象 Step 1/2，未打 tag）
 
 - **Step 1 · refs 双表拆分**（`e86fb38`）：`contracts.ts` 拆为 `runtime`（26 条数据契约）/ `modules`（12 条内容模块）；移除 4 条下沉残留、收编 1 处裸路径、清空 `contracts` 数组（当时零消费方）；产物零 diff。

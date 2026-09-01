@@ -2,7 +2,9 @@ import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import { effectContractSection } from '../domain/effects.js';
 import { assembly } from '../domain/prompts.js';
-import { runtime, modules } from '../contracts.js';
+import { modules } from '../contracts.js';
+import { refOf, schemaRef } from '../domain/entities.js';
+
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -10,16 +12,16 @@ export const assemble = step('assemble', '命题组装')
   .target('为每个命题生成四象限研究输出')
   .summary('组装四象限研究输出（overview/edge-cases/trade-offs/experiment）')
   .dependsOn('briefing-assemble')
-  .reads(runtime.briefing, runtime.requirementWeb, runtime.capabilityGraph)
-  .writes(runtime.overview, runtime.edgeCases, runtime.tradeoffs, runtime.references, runtime.experiment, runtime.assemblyRatioTrace)
-  .inputs('{workDir}/.meta/briefings/{seq}-{short_name}.md')
+  .reads(refOf('briefing'), refOf('requirementWeb'), refOf('capabilityGraph'))
+  .writes(refOf('overview'), refOf('edgeCases'), refOf('tradeoffs'), refOf('references'), refOf('experiment'), refOf('assemblyRatioTrace'))
+  .inputs(refOf('briefing').path)
   .outputs(
-    '{workDir}/{seq}-{short_name}/overview.md',
-    '{workDir}/{seq}-{short_name}/edge-cases.md',
-    '{workDir}/{seq}-{short_name}/trade-offs.md',
-    '{workDir}/{seq}-{short_name}/references.md',
-    '{workDir}/{seq}-{short_name}/experiment/README.md',
-    '{workDir}/{seq}-{short_name}/_assembly_ratio_trace.json',
+    refOf('overview').path,
+    refOf('edgeCases').path,
+    refOf('tradeoffs').path,
+    refOf('references').path,
+    refOf('experiment').path,
+    refOf('assemblyRatioTrace').path,
   )
   .detail(assembly.detail())
   .section('Markdown Agent', assembly.markdownAgent())
@@ -37,10 +39,10 @@ export const assemble = step('assemble', '命题组装')
     assembly.experimentAgentTask(),
   )
   .verify(
-    verify.file('{workDir}/{seq}-{short_name}/edge-cases.md', 'edge-cases 文件存在'),
+    verify.file(refOf('edgeCases').path, 'edge-cases 文件存在'),
     verify.field('筛选_trace', 'edge-cases 每个坑点包含筛选_trace'),
-    verify.file('{workDir}/{seq}-{short_name}/_assembly_ratio_trace.json', '组装占比 trace 存在'),
-    verify.json('{workDir}/{seq}-{short_name}/_assembly_ratio_trace.json', '组装占比 trace 可解析'),
+    verify.file(refOf('assemblyRatioTrace').path, '组装占比 trace 存在'),
+    verify.json(refOf('assemblyRatioTrace').path, '组装占比 trace 可解析'),
     verify.count('场景化输入/边界/验证 >= 3，特化占比 >= 30%'),
   )
   .onFail(
@@ -54,7 +56,7 @@ export const assemble = step('assemble', '命题组装')
     ),
   )
   .reuse(
-    { ifExists: '{workDir}/{seq}-{short_name}/overview.md', skipDescription: '命题 overview 已存在' },
+    { ifExists: refOf('overview').path, skipDescription: '命题 overview 已存在' },
   )
   
   .display({
@@ -67,7 +69,7 @@ export const assemble = step('assemble', '命题组装')
   .map(
     'assemble-map',
     '命题组装滚动窗口',
-    { path: '{workDir}/.meta/requirement-web.json#propositions', dynamic: true },
+    { path: refOf('requirementWeb').path + '#propositions', dynamic: true },
     doAction(
       'assemble',
       'assemble-worker',

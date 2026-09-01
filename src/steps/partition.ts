@@ -1,7 +1,8 @@
 import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import * as partitionRules from '../domain/content/partition.js';
-import { runtime, modules } from '../contracts.js';
+import { modules } from '../contracts.js';
+import { refOf, schemaRef } from '../domain/entities.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -9,10 +10,10 @@ export const partition = step('partition', '依赖分区')
   .target('生成可被 scan 消费的分区分析和执行计划')
   .summary('整理命题依赖DAG，识别分区点分批执行')
   .dependsOn('brainstorm')
-  .reads(runtime.requirementWeb)
-  .writes(runtime.partitionAnalysis, runtime.executionPlan)
-  .inputs('{workDir}/.meta/requirement-web.json')
-  .outputs('{workDir}/.meta/partition-analysis.json', '{workDir}/execution-plan.md')
+  .reads(refOf('requirementWeb'))
+  .writes(refOf('partitionAnalysis'), refOf('executionPlan'))
+  .inputs(refOf('requirementWeb').path)
+  .outputs(refOf('partitionAnalysis').path, refOf('executionPlan').path)
   .detail(partitionRules.detail())
   .section('三层分区', partitionRules.threeLayerSection())
   .section('Session 分配', partitionRules.sessionSection())
@@ -28,7 +29,7 @@ export const partition = step('partition', '依赖分区')
     partitionRules.sessionTask(),
   )
   .verify(
-    verify.json('{workDir}/.meta/partition-analysis.json', '分区分析可解析'),
+    verify.json(refOf('partitionAnalysis').path, '分区分析可解析'),
     verify.field('current_session', 'current_session 命题明确'),
     verify.field('scan_batches', 'scan_batches 可消费'),
   )

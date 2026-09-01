@@ -2,7 +2,9 @@ import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import { effectContractSection } from '../domain/effects.js';
 import { research } from '../domain/prompts.js';
-import { runtime, modules } from '../contracts.js';
+import { modules } from '../contracts.js';
+import { refOf, schemaRef } from '../domain/entities.js';
+
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -10,10 +12,10 @@ export const capabilityResearch = step('capability-research', '能力研究')
   .target('生成能力知识库主文件、结构化摘要和索引')
   .summary('深度研究原子能力，产出知识库主文件')
   .dependsOn('evaluate-pool')
-  .reads(runtime.capabilityGraph, runtime.readme, { ...modules.refSources, as: 'contract' }, runtime.scanIndex)
-  .writes(runtime.researchPlan, runtime.capabilities, runtime.summaries, runtime.capabilitiesReadme)
-  .inputs('{workDir}/.meta/capability-graph.json', '{workDir}/README.md', '{workDir}/.meta/.raw-materials/index.json')
-  .outputs('{workDir}/.meta/research-plan.json', '{workDir}/capabilities/*.md', '{workDir}/.meta/summaries/*.json', '{workDir}/capabilities/README.md')
+  .reads(refOf('capabilityGraph'), refOf('readme'), { ...modules.refSources, as: 'contract' }, refOf('scanIndex'))
+  .writes(refOf('researchPlan'), refOf('capabilities'), refOf('summaries'), refOf('capabilitiesReadme'))
+  .inputs(refOf('capabilityGraph').path, refOf('readme').path, refOf('scanIndex').path)
+  .outputs(refOf('researchPlan').path, refOf('capabilities').path, refOf('summaries').path, refOf('capabilitiesReadme').path)
   .detail(research.detail())
   .section('域 Agent 任务', research.domainAgentTask())
   .section('素材分配与 usage trace', research.materialAllocation())
@@ -30,12 +32,12 @@ export const capabilityResearch = step('capability-research', '能力研究')
     research.capabilityFileTemplate(),
   )
   .verify(
-    verify.file('{workDir}/.meta/research-plan.json', '研究素材分配计划存在'),
-    verify.json('{workDir}/.meta/research-plan.json', '研究素材分配计划可解析'),
+    verify.file(refOf('researchPlan').path, '研究素材分配计划存在'),
+    verify.json(refOf('researchPlan').path, '研究素材分配计划可解析'),
     verify.field('coverage', '研究计划包含素材覆盖率'),
     verify.field('material_usage', '每个能力摘要包含 material_usage'),
-    verify.file('{workDir}/capabilities/{id}-{name}.md', '能力主文件存在'),
-    verify.json('{workDir}/.meta/summaries/{id}-{name}.json', '能力摘要可解析'),
+    verify.file(refOf('capabilities').path.replace('*', '{id}-{name}'), '能力主文件存在'),
+    verify.json(refOf('summaries').path.replace('*', '{id}-{name}'), '能力摘要可解析'),
     verify.count('分组能力数不超过 5'),
   )
   .onFail(
@@ -49,8 +51,8 @@ export const capabilityResearch = step('capability-research', '能力研究')
     ),
   )
   .reuse(
-    { ifExists: '{workDir}/capabilities/{id}-{name}.md', skipDescription: '能力主文件已存在' },
-    { ifExists: '{workDir}/.meta/summaries/{id}-{name}.json', skipDescription: '能力摘要已存在' },
+    { ifExists: refOf('capabilities').path.replace('*', '{id}-{name}'), skipDescription: '能力主文件已存在' },
+    { ifExists: refOf('summaries').path.replace('*', '{id}-{name}'), skipDescription: '能力摘要已存在' },
   )
   .plugins('capability-research-mode')
   
@@ -64,7 +66,7 @@ export const capabilityResearch = step('capability-research', '能力研究')
   .map(
     'capability-research-map',
     '能力研究滚动窗口',
-    { path: '{workDir}/.meta/capability-graph.json#capabilities', dynamic: true },
+    { path: refOf('capabilityGraph').path + '#capabilities', dynamic: true },
     doAction(
       'generate',
       'capability-research-worker',
