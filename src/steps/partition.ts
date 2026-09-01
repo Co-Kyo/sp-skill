@@ -1,7 +1,7 @@
 import { step } from 'skillnomad-types';
 import { doAction } from '../actions.js';
 import * as partitionRules from '../domain/content/partition.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -9,8 +9,8 @@ export const partition = step('partition', '依赖分区')
   .target('生成可被 scan 消费的分区分析和执行计划')
   .summary('整理命题依赖DAG，识别分区点分批执行')
   .dependsOn('brainstorm')
-  .reads(refs.requirementWeb)
-  .writes(refs.partitionAnalysis, refs.executionPlan)
+  .reads(runtime.requirementWeb)
+  .writes(runtime.partitionAnalysis, runtime.executionPlan)
   .inputs('{workDir}/.meta/requirement-web.json')
   .outputs('{workDir}/.meta/partition-analysis.json', '{workDir}/execution-plan.md')
   .detail(partitionRules.detail())

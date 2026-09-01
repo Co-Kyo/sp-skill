@@ -2,7 +2,7 @@ import { step } from 'skillnomad-types';
 import { doAction } from '../actions.js';
 import { effectContractSection } from '../domain/effects.js';
 import { research } from '../domain/prompts.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -10,8 +10,8 @@ export const capabilityResearch = step('capability-research', '能力研究')
   .target('生成能力知识库主文件、结构化摘要和索引')
   .summary('深度研究原子能力，产出知识库主文件')
   .dependsOn('evaluate-pool')
-  .reads(refs.capabilityGraph, refs.readme, { ...refs.refSources, as: 'contract' }, refs.scanIndex)
-  .writes(refs.researchPlan, refs.capabilities, refs.summaries, refs.capabilitiesReadme)
+  .reads(runtime.capabilityGraph, runtime.readme, { ...modules.refSources, as: 'contract' }, runtime.scanIndex)
+  .writes(runtime.researchPlan, runtime.capabilities, runtime.summaries, runtime.capabilitiesReadme)
   .inputs('{workDir}/.meta/capability-graph.json', '{workDir}/README.md', '{workDir}/.meta/.raw-materials/index.json')
   .outputs('{workDir}/.meta/research-plan.json', '{workDir}/capabilities/*.md', '{workDir}/.meta/summaries/*.json', '{workDir}/capabilities/README.md')
   .detail(research.detail())

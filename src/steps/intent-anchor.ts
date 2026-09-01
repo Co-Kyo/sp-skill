@@ -1,7 +1,7 @@
 import { step } from 'skillnomad-types';
 import * as intent from '../domain/content/intent.js';
 import { displayFoldMulti } from '../domain/mechanics.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -10,12 +10,12 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
   .summary('解析用户指令，推断年限，生成共享骨架')
   .dependsOn('initialize')
   .reads(
-    { path: 'assets/00-intent-anchor/schemas.md', description: 'anchors 格式', required: true, as: 'contract' },
-    { ...refs.yearRules, as: 'contract' },
-    { ...refs.skipRules, as: 'contract' },
-    { ...refs.strategyLevel, as: 'contract' },
+    { ...modules.intentAnchorSchemas, as: 'contract' },
+    { ...modules.yearRules, as: 'contract' },
+    { ...modules.skipRules, as: 'contract' },
+    { ...modules.strategyLevel, as: 'contract' },
   )
-  .writes(refs.anchors)
+  .writes(runtime.anchors)
   .inputs('raw_input')
   .action('parse', 'intent-extract', '轻量提取', '提取 topic、tech_stack 和显式年限参数。')
   .action('infer', 'intent-year', '年限推断', '按优先级链推断 target_level 并记录 year_inference_trace。')

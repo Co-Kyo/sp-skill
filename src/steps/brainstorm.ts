@@ -2,7 +2,7 @@ import { step } from 'skillnomad-types';
 import { agentAction, doAction } from '../actions.js';
 import * as brainstormRules from '../domain/content/brainstorm.js';
 import { displayFoldMulti } from '../domain/mechanics.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -11,13 +11,13 @@ export const brainstorm = step('brainstorm', '头脑风暴')
   .summary('4维度Agent并行分析，产出结构化需求网')
   .dependsOn('intent-anchor')
   .reads(
-    refs.anchors,
-    { ...refs.agentInit, as: 'contract' },
-    { ...refs.barrierCheck, as: 'contract' },
-    { ...refs.fallbackProtocol, as: 'contract' },
-    { ...refs.brainstormSchemas, as: 'contract' },
+    runtime.anchors,
+    { ...modules.agentInit, as: 'contract' },
+    { ...modules.barrierCheck, as: 'contract' },
+    { ...modules.fallbackProtocol, as: 'contract' },
+    { ...modules.brainstormSchemas, as: 'contract' },
   )
-  .writes(refs.requirementWeb)
+  .writes(runtime.requirementWeb)
   .inputs('{workDir}/.meta/brainstorm/anchors.json')
   .outputs('{workDir}/.meta/requirement-web.json')
   .detail(brainstormRules.detail())

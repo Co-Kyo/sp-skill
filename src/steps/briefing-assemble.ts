@@ -2,7 +2,7 @@ import { step } from 'skillnomad-types';
 import { doAction } from '../actions.js';
 import { effectContractSection } from '../domain/effects.js';
 import { briefing } from '../domain/prompts.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -10,8 +10,8 @@ export const briefingAssemble = step('briefing-assemble', 'Briefing 组装')
   .target('为每个命题生成包含能力摘要的 Briefing')
   .summary('从能力摘要提取关键信息，组装Briefing')
   .dependsOn('capability-research')
-  .reads(refs.requirementWeb, refs.summaries)
-  .writes(refs.briefing)
+  .reads(runtime.requirementWeb, runtime.summaries)
+  .writes(runtime.briefing)
   .inputs('{workDir}/.meta/requirement-web.json', '{workDir}/.meta/summaries/*.json')
   .outputs('{workDir}/.meta/briefings/{seq}-{short_name}.md')
   .detail(briefing.detail())

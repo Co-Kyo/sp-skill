@@ -9,7 +9,7 @@ import {
   stepFormat,
   workerTask,
 } from '../domain/ladder.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -17,8 +17,8 @@ export const learningLadder = step('learning-ladder', '学习阶梯')
   .target('为每个命题生成从不会到能讲的渐进学习路径')
   .summary('生成从"不会"到"能讲"的渐进式路径')
   .dependsOn('assemble')
-  .reads(refs.dependencyGraph, refs.summaries, refs.overview, refs.anchors)
-  .writes(refs.ladder)
+  .reads(runtime.dependencyGraph, runtime.summaries, runtime.overview, runtime.anchors)
+  .writes(runtime.ladder)
   .inputs('{workDir}/.meta/dependency-graph.json', '{workDir}/.meta/summaries/*.json', '{workDir}/{seq}-{short_name}/overview.md')
   .outputs('{workDir}/{seq}-{short_name}/learning-ladder.md')
   .detail(ladderDetail())

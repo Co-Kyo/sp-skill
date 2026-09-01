@@ -1,7 +1,7 @@
 import { step } from 'skillnomad-types';
 import { doAction } from '../actions.js';
 import * as evaluation from '../domain/content/evaluation.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -9,8 +9,8 @@ export const evaluatePool = step('evaluate-pool', '评估入池')
   .target('生成按年限阈值入池的评估结果与推荐顺序')
   .summary('四维评估矩阵打分，确定优先级和学习顺序')
   .dependsOn('capability-graph')
-  .reads(refs.capabilityGraph, refs.dependencyGraph, { ...refs.evaluationMethod, as: 'contract' })
-  .writes(refs.evaluations, refs.readme, refs.candidates)
+  .reads(runtime.capabilityGraph, runtime.dependencyGraph, { ...modules.evaluationMethod, as: 'contract' })
+  .writes(runtime.evaluations, runtime.readme, runtime.candidates)
   .inputs('{workDir}/.meta/capability-graph.json', '{workDir}/.meta/dependency-graph.json')
   .outputs('{workDir}/.meta/evaluations.json', '{workDir}/README.md', '{workDir}/.meta/candidates.md')
   .detail(evaluation.detail())

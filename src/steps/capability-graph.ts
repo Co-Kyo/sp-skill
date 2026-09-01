@@ -2,7 +2,7 @@ import { step } from 'skillnomad-types';
 import { doAction } from '../actions.js';
 import * as capability from '../domain/content/capability.js';
 import { displayFoldMulti } from '../domain/mechanics.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -10,8 +10,8 @@ export const capabilityGraph = step('capability-graph', '能力图谱')
   .target('生成能力图谱、依赖图、战略高地与学习路径')
   .summary('跨命题去重合并原子能力，计算战略价值')
   .dependsOn('scan')
-  .reads(refs.requirementWeb, refs.scanIndex)
-  .writes(refs.capabilityGraph, refs.dependencyGraph, refs.highgrounds, refs.learningPath)
+  .reads(runtime.requirementWeb, runtime.scanIndex)
+  .writes(runtime.capabilityGraph, runtime.dependencyGraph, runtime.highgrounds, runtime.learningPath)
   .inputs('{workDir}/.meta/requirement-web.json', '{workDir}/.meta/.raw-materials/index.json')
   .outputs(
     '{workDir}/.meta/capability-graph.json',

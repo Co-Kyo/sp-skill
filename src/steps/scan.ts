@@ -1,6 +1,6 @@
 import { step } from 'skillnomad-types';
 import { doAction } from '../actions.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import * as scanRules from '../domain/content/scan.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
@@ -10,14 +10,14 @@ export const scan = step('scan', '广域扫描')
   .summary('按level_weight差异化搜索信源，结构化提取')
   .dependsOn('partition')
   .reads(
-    refs.requirementWeb,
-    { ...refs.partitionAnalysis, required: false },
-    { ...refs.schemasScan, as: 'contract' },
-    { ...refs.refSources, as: 'contract' },
-    { ...refs.strategyLevel, as: 'contract' },
-    refs.antiCrawlFetch,
+    runtime.requirementWeb,
+    { ...runtime.partitionAnalysis, required: false },
+    { ...modules.schemasScan, as: 'contract' },
+    { ...modules.refSources, as: 'contract' },
+    { ...modules.strategyLevel, as: 'contract' },
+    modules.antiCrawlFetch,
   )
-  .writes(refs.scanIndex, refs.scanMaterials)
+  .writes(runtime.scanIndex, runtime.scanMaterials)
   .inputs(
     'source_desc',
     'topic',

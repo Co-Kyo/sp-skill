@@ -1,7 +1,7 @@
 import { step } from 'skillnomad-types';
 import { initializeDetail, WORKDIR_NAMING } from '../domain/content/initialize.js';
 import { verifyPair } from '../domain/mechanics.js';
-import { refs } from '../contracts.js';
+import { runtime, modules } from '../contracts.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
@@ -12,7 +12,7 @@ export const initialize = step('initialize', '初始化')
   // 省略 dependsOn 由框架推导（deriveInitStepId 从链起点推导 initStepId）。
   .writes(
     { path: '{workDir}/.meta/init.json', description: '初始化记录', required: true },
-    refs.run,
+    runtime.run,
   )
   .inputs('raw_input')
   .action('parse', 'init-parse', '解析输出目录', `解析用户指定目录或默认 ${WORKDIR_NAMING}，确认目录可用。`)
