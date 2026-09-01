@@ -12,10 +12,10 @@ export const brainstorm = step('brainstorm', '头脑风暴')
   .dependsOn('intent-anchor')
   .reads(
     runtime.anchors,
-    { ...modules.agentInit, as: 'contract' },
-    { ...modules.barrierCheck, as: 'contract' },
-    { ...modules.fallbackProtocol, as: 'contract' },
-    { ...modules.brainstormSchemas, as: 'contract' },
+    { ...modules.agentInit, as: 'rule' },
+    { ...modules.barrierCheck, as: 'rule' },
+    { ...modules.fallbackProtocol, as: 'rule' },
+    { ...modules.brainstormSchemas, as: 'schema' },
   )
   .writes(runtime.requirementWeb)
   .inputs('{workDir}/.meta/brainstorm/anchors.json')

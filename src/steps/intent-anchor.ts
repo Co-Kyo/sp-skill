@@ -10,9 +10,9 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
   .summary('解析用户指令，推断年限，生成共享骨架')
   .dependsOn('initialize')
   .reads(
-    { ...modules.intentAnchorSchemas, as: 'contract' },
-    { ...modules.yearRules, as: 'contract' },
-    { ...modules.skipRules, as: 'contract' },
+    { ...modules.intentAnchorSchemas, as: 'schema' },
+    { ...modules.yearRules, as: 'rule' },
+    { ...modules.skipRules, as: 'rule' },
     { ...modules.strategyLevel, as: 'contract' },
   )
   .writes(runtime.anchors)

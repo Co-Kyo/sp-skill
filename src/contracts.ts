@@ -70,12 +70,30 @@ export const modules = {
 } satisfies Record<string, SourceRef>;
 
 /**
- * **契约注册表（已清空）**
+ * **模块注册表（8.15 Step 2 起复活）**
  *
- * 8.5 起「契约引用」章节由 `reads.filter(as === 'contract')` 派生渲染，
- * 本数组在 skillnomad 源码中**无任何消费方**（仅 `SkillSourceModel.contracts` 类型字段），
- * 且 sp-skill 侧无人导入 —— 原 5 条中 4 条与 `modules` 重复登记、1 条（protocol-checkpoint）零引用。
+ * 8.5 之前是「契约注册表」（构建器渲染契约引用章节，后被 `reads.filter(as==='contract')`
+ * 派生取代，成为无消费方字段）；8.15 Step 1 清空冗余后，Step 2 重新定义为
+ * **内容模块注册表**：`id`（符号名）+ `scope`（归属层）+ `kind`（语义种类）+ `path`（渲染载体）。
  *
- * 8.15 Step 1 清空（消除双轨冗余），类型字段待 8.15 Step 2 与框架协商移除。
+ * 消费方：`validateModuleUsage`（skillnomad 构建期校验）——
+ * - V1 角色×归属一致性：`as:'contract'` 必须指向 `scope:'skill'` 条目
+ * - V2 私有可见性：`scope:'step'` 条目只能被归属步骤引用
+ *
+ * 存量安置（两次裁决合成）：2 个 skill 级 contract 保留；9 个 step 级按真实性质贴标签
+ * （5 rule + 1 method + 3 schema——schema ×3 待 8.16 挂产物实体）；anti-crawl-fetch 并入 skill 级。
  */
-export const contracts: SourceContract[] = [];
+export const contracts: SourceContract[] = [
+  { id: 'ref-sources', kind: 'policy', path: 'assets/common/ref-sources.md', description: '信源分级与反爬域名', scope: 'skill' },
+  { id: 'strategy-level', kind: 'policy', path: 'assets/common/strategy-level.md', description: '密度参数查表', scope: 'skill' },
+  { id: 'anti-crawl-fetch', kind: 'method', path: 'plugins/anti-crawl-fetch.md', description: 'Playwright 抓取', scope: 'skill' },
+  { id: 'agent-init', kind: 'policy', path: 'assets/01-brainstorm/agent-init.md', description: '维度 Agent 初始化定义', scope: 'step', step: 'brainstorm' },
+  { id: 'barrier-check', kind: 'policy', path: 'assets/01-brainstorm/barrier-check.md', description: 'Barrier 检查项与决策矩阵', scope: 'step', step: 'brainstorm' },
+  { id: 'fallback-protocol', kind: 'policy', path: 'assets/01-brainstorm/fallback-protocol.md', description: '收敛者失败降级协议', scope: 'step', step: 'brainstorm' },
+  { id: 'year-rules', kind: 'policy', path: 'assets/00-intent-anchor/year-rules.md', description: '年限推断规则', scope: 'step', step: 'intent-anchor' },
+  { id: 'skip-rules', kind: 'policy', path: 'assets/00-intent-anchor/skip-rules.md', description: '跳过判断规则', scope: 'step', step: 'intent-anchor' },
+  { id: 'evaluation-method', kind: 'method', path: 'assets/05-evaluate-pool/method.md', description: '评估方法论', scope: 'step', step: 'evaluate-pool' },
+  { id: 'schemas-scan', kind: 'schema', path: 'assets/03-scan/schemas.md', description: '扫描输出格式', scope: 'step', step: 'scan' },
+  { id: 'schemas-brainstorm', kind: 'schema', path: 'assets/01-brainstorm/schemas.md', description: '头脑风暴输出格式', scope: 'step', step: 'brainstorm' },
+  { id: 'intent-anchor-schemas', kind: 'schema', path: 'assets/00-intent-anchor/schemas.md', description: 'anchors 格式', scope: 'step', step: 'intent-anchor' },
+];

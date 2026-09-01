@@ -12,7 +12,7 @@ export const scan = step('scan', '广域扫描')
   .reads(
     runtime.requirementWeb,
     { ...runtime.partitionAnalysis, required: false },
-    { ...modules.schemasScan, as: 'contract' },
+    { ...modules.schemasScan, as: 'schema' },
     { ...modules.refSources, as: 'contract' },
     { ...modules.strategyLevel, as: 'contract' },
     modules.antiCrawlFetch,

@@ -1,5 +1,11 @@
 # Changelog
 
+## post-v1.4.0（8.15 模块抽象 Step 1/2，未打 tag）
+
+- **Step 1 · refs 双表拆分**（`e86fb38`）：`contracts.ts` 拆为 `runtime`（26 条数据契约）/ `modules`（12 条内容模块）；移除 4 条下沉残留、收编 1 处裸路径、清空 `contracts` 数组（当时零消费方）；产物零 diff。
+- **Step 2 · 模块注册表 + 标签安置**：`contracts` 数组复活为模块注册表（12 条，含 `id`/`kind`/`scope`）；9 处 `as` 标签按真实性质修正（5 rule + 1 method + 3 schema）；2 个 skill 级契约保留。产物 = 预期修正性变化（契约引用 13→4，9 条移入读取表，信息不丢失）。
+- 注：依赖 skillnomad beta.7 候选（`scope` 字段 + `validateModuleUsage` 构建期校验）；未打新 sp-skill 发布 tag。
+
 ## post-v1.4.0（skillnomad beta.5 / beta.6 配套，依赖对齐）
 
 - **跟随 skillnomad 0.1.0-beta.5**（`170d5f6`）：依赖升级；序言「契约引用」章节恢复（8.5 渲染侧派生修复落地）。
