@@ -1,4 +1,4 @@
-import { step } from 'skillnomad-types';
+import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import * as capability from '../domain/content/capability.js';
 import { displayFoldMulti } from '../domain/mechanics.js';

@@ -1,7 +1,7 @@
 import type {
   SourceContract,
   SourceRef,
-} from 'skillnomad-types';
+} from 'skillnomad';
 
 /**
  * **runtime —— 运行时数据契约（26 条）**

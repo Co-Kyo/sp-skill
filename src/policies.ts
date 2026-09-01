@@ -1,7 +1,7 @@
 import type {
   SourceCheckpoint,
   SourcePolicies,
-} from 'skillnomad-types';
+} from 'skillnomad';
 
 export const policies: SourcePolicies = {
   contextIsolation: true,

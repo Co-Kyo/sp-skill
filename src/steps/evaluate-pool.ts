@@ -1,4 +1,4 @@
-import { step } from 'skillnomad-types';
+import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import * as evaluation from '../domain/content/evaluation.js';
 import { runtime, modules } from '../contracts.js';

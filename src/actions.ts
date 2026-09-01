@@ -2,7 +2,7 @@ import type {
   NextAction,
   SourceAction,
   SourceFlow,
-} from 'skillnomad-types';
+} from 'skillnomad';
 
 export function agentAction(
   verb: NextAction,

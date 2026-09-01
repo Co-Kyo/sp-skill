@@ -1,4 +1,4 @@
-import { step } from 'skillnomad-types';
+import { step } from 'skillnomad';
 import { agentAction, doAction } from '../actions.js';
 import * as brainstormRules from '../domain/content/brainstorm.js';
 import { displayFoldMulti } from '../domain/mechanics.js';

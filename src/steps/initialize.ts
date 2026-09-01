@@ -1,4 +1,4 @@
-import { step } from 'skillnomad-types';
+import { step } from 'skillnomad';
 import { initializeDetail, WORKDIR_NAMING } from '../domain/content/initialize.js';
 import { verifyPair } from '../domain/mechanics.js';
 import { runtime, modules } from '../contracts.js';

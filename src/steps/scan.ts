@@ -1,4 +1,4 @@
-import { step } from 'skillnomad-types';
+import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import { runtime, modules } from '../contracts.js';
 import * as scanRules from '../domain/content/scan.js';

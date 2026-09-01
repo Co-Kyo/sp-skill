@@ -1,4 +1,4 @@
-import type { SourceStep } from 'skillnomad-types';
+import type { SourceStep } from 'skillnomad';
 import { initialize } from './initialize.js';
 import { intentAnchor } from './intent-anchor.js';
 import { brainstorm } from './brainstorm.js';

@@ -1,7 +1,7 @@
 import type {
   SourceFailRule,
   SourceVerifyRule,
-} from 'skillnomad-types';
+} from 'skillnomad';
 
 export const verify = {
   file: (ref: string, description: string): SourceVerifyRule => ({

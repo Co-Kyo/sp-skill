@@ -1,4 +1,4 @@
-import type { SkillSourceModel } from 'skillnomad-types';
+import type { SkillSourceModel } from 'skillnomad';
 import { createSkillFromModel } from 'skillnomad';
 import { contracts } from './src/contracts.js';
 import { policies } from './src/policies.js';

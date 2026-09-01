@@ -1,4 +1,4 @@
-import { step } from 'skillnomad-types';
+import { step } from 'skillnomad';
 import * as intent from '../domain/content/intent.js';
 import { displayFoldMulti } from '../domain/mechanics.js';
 import { runtime, modules } from '../contracts.js';

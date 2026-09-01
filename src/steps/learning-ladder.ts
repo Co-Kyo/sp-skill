@@ -1,4 +1,4 @@
-import { step } from 'skillnomad-types';
+import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import { effectContractSection } from '../domain/effects.js';
 import {
