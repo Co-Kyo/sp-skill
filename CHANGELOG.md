@@ -1,5 +1,11 @@
 # Changelog
 
+## post-v1.4.0（skillnomad 0.1.0 正式版对齐，deck15 裁决收尾）
+
+- **依赖对齐**：`skillnomad` 从 `^0.1.0-beta.9` 切到 **`0.1.0`**（`--save-exact` 精确锁定）——框架首个稳定版（可信度里程碑，`latest` dist-tag 首次指向正式版）。
+- **零行为变化预期兑现**：typecheck ✓ · 44 测试全绿 ✓ · build 15 files ✓；beta.9 → 0.1.0 间框架代码差异仅 validate CLI Windows 修复与注释清理，sp-skill 无需任何适配改动。
+- 第二用例 narrative-focus-port 已先行归位并落地 ref 声明模式（`SourceRef.ref` 真实消费者，框架未解析防护 4/4 验证）——与 sp-skill 实体常量模式互为反证。
+
 ## post-v1.4.0（8.16 产物路径投射，beta.9 配套）
 
 - **产物实体声明**：新建 `src/domain/entities.ts`（27 条实体：8 组领域概念 + 机制产物，含 `init.json` 补漏）；`refOf`/`schemaRef` 概念引用辅助。
