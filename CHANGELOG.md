@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.1（skillnomad 0.1.1 P1 修复对齐）
+
+- **依赖对齐**：`skillnomad` 从 **`0.1.0`** 切到 **`0.1.1`**（`--save-exact` 精确锁定）——框架 P1 缺陷修复版（`renderStep` 正文早返分支补渲染依赖/增量复用/降级协议/插件加载四节）。
+- **产物恢复**：构建产物 `## 增量复用`×4、`## 插件加载`×4、`## 依赖`×11 全命中（补承诺，非新功能；`## 降级协议`零命中符合预期：11 步零 `.degrade()`）。
+- 验收：typecheck ✓ · 44 测试全绿 ✓ · build 15 files ✓；无需任何适配改动。
+- `VERSION_LINEAGE.json` 同步：`skillnomad_version` 0.1.1（此前滞后 beta.3 的文档债一并还清）、`sp_skill_source_version`/`sp_skill_release` 1.4.1/v1.4.1。
+
 ## post-v1.4.0（skillnomad 0.1.0 正式版对齐，deck15 裁决收尾）
 
 - **依赖对齐**：`skillnomad` 从 `^0.1.0-beta.9` 切到 **`0.1.0`**（`--save-exact` 精确锁定）——框架首个稳定版（可信度里程碑，`latest` dist-tag 首次指向正式版）。
