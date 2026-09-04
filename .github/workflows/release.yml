@@ -84,12 +84,20 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 常规迭代更新：release 分支保留 git 历史，每次发布累积一个 commit，
+          # 可用 git log/diff 对比版本间产物变化。禁止 --orphan/--force（过渡期已结束）。
+          git fetch origin release:refs/remotes/origin/release || true
           rm -rf /tmp/sp-skill-release
-          git worktree add --detach /tmp/sp-skill-release HEAD
+          if git rev-parse --verify refs/remotes/origin/release >/dev/null 2>&1; then
+            git worktree add -B release /tmp/sp-skill-release origin/release
+          else
+            git worktree add --orphan /tmp/sp-skill-release release-orphan-tmp
+            git -C /tmp/sp-skill-release checkout --orphan release
+            git -C /tmp/sp-skill-release rm -rf . || true
+          fi
           cd /tmp/sp-skill-release
-          git branch -D release 2>/dev/null || true
-          git checkout --orphan release
-          git rm -rf .
+          # 清空旧产物（保留 .git），再拷入新产物
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
           find "$GITHUB_WORKSPACE/release/sp-skill" -mindepth 1 -maxdepth 1 -exec cp -R {} . \;
           cat > README.md <<'EOF'
           # sp-skill release
@@ -101,8 +109,12 @@ jobs:
           - The source repository lives on `main`.
           EOF
           git add .
-          git commit -m "chore: publish sp-skill ${RELEASE_TAG}"
-          git push --force origin release
+          if git diff --cached --quiet; then
+            echo "release 内容无变化，跳过提交"
+          else
+            git commit -m "chore: publish sp-skill ${RELEASE_TAG}"
+            git push origin release
+          fi
           cd "$GITHUB_WORKSPACE"
           git worktree remove --force /tmp/sp-skill-release
 
