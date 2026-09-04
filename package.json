@@ -9,7 +9,7 @@
     "test": "node --import tsx --test src/domain/ladder.test.ts src/domain/effects.test.ts src/domain/learner.test.ts src/steps/flow.test.ts src/domain/content/content.test.ts src/domain/content/brainstorm.test.ts src/domain/content/scan.test.ts src/domain/numbering-governance.test.ts"
   },
   "dependencies": {
-    "skillnomad": "0.1.0"
+    "skillnomad": "0.1.1"
   },
   "devDependencies": {
     "@types/node": "^26.1.0",
