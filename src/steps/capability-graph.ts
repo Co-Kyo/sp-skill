@@ -2,8 +2,7 @@ import { step } from 'skillnomad';
 import { doAction } from '../actions.js';
 import * as capability from '../domain/content/capability.js';
 import { displayFoldMulti } from '../domain/mechanics.js';
-import { modules } from '../contracts.js';
-import { refOf, schemaRef } from '../domain/entities.js';
+import { refOf } from '../domain/entities.js';
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
 
