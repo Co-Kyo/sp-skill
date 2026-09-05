@@ -73,9 +73,13 @@ export const brainstorm = step('brainstorm', '头脑风暴')
       '请确认头脑风暴收敛后的需求网。',
     ),
   )
+  // P2 decision 示例值（专案24）：以下 metrics/selection/risks/barrier_summary 均为
+  // **某次真实历史运行的示例取值**（命题 10、L2、排除项 20），非运行时计算值。
+  // 读产物者请注意：执行时以实际运行数据为准；框架 `SourceDecisionSummary`
+  // 暂无"示例/运行时填充"的类型表达，待框架补（见 skillnomad 侧）后加 `isExample: true`。
   .decision({
     gateType: 'human_gate',
-    title: '需求网确认',
+    title: '需求网确认（示例值）',
     confirm: '确认需求网',
     context: {
       current: '需求网确认',
@@ -83,23 +87,23 @@ export const brainstorm = step('brainstorm', '头脑风暴')
       next: '分区确认',
     },
     metrics: [
-      { id: 'propositions', label: '命题', value: '10', detail: '全部 L2 core' },
-      { id: 'year', label: '年限推断', value: 'L2', detail: '3-5 年' },
-      { id: 'exclusions', label: '排除项', value: '20', detail: 'deprecated/越界' },
+      { id: 'propositions', label: '命题（示例）', value: '10', detail: '示例：全部 L2 core' },
+      { id: 'year', label: '年限推断（示例）', value: 'L2', detail: '示例：3-5 年' },
+      { id: 'exclusions', label: '排除项（示例）', value: '20', detail: '示例：deprecated/越界' },
     ],
     selection: {
       unit: '需求网命题',
-      summary: '10/10 命题默认选中，可按命题或分组调整。',
+      summary: '示例：10/10 命题默认选中，可按命题或分组调整。',
       total: 10,
       selected: 10,
     },
     risks: [
-      { code: 'validation', label: 'JSON 转义修复', severity: 'warning', count: 1, detail: '已修复并重新校验通过' },
+      { code: 'validation', label: 'JSON 转义修复（示例风险项）', severity: 'warning', count: 1, detail: '示例：已修复并重新校验通过' },
     ],
     actions: [
       { id: 'confirm', label: '确认需求网', verb: 'confirm', primary: true },
     ],
-    barrier_summary: '当前阶段：需求网确认；本次确认：命题/年限/排除边界；下一步：分区确认；命题 10，年限 L2，排除项 20；10/10 已选。',
+    barrier_summary: '示例值——当前阶段：需求网确认；本次确认：命题/年限/排除边界；下一步：分区确认；命题 10，年限 L2，排除项 20；10/10 已选。',
   })
   .plugins('year-granularity')
   .parallel(
