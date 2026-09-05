@@ -25,8 +25,8 @@ export const intentAnchor = step('intent-anchor', '意图锚定')
   .outputs(refOf('anchors').path)
   .detail(intent.detail())
   .section('跳过判断', intent.skipSection())
-  // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
-  // 本步 reads 全为契约文档（assets/ 下），统一标 as:'contract'。
+  // 8.5 迁移：contractRefs 收拢进 reads + as 角色标签，本方法已从 beta.4 类型删除。
+  // 本步 reads 按角色混标：schema（anchors 格式）/ rule（yearRules/skipRules）/ contract（strategyLevel）。
   .taskTemplate(
     '锚点生成',
     intent.anchorTask(),

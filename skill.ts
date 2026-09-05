@@ -4,7 +4,8 @@ import { contracts } from './src/contracts.js';
 import { policies } from './src/policies.js';
 import { steps } from './src/steps/index.js';
 
-// Phase II:阶段→步骤映射唯一数据源(flow.test 守卫其与 steps 全序一致)
+// Phase II:阶段→步骤映射唯一数据源（链顺序唯一事实是 dependsOn 声明，由框架构建期校验；
+// flow.test 为 8.9 裁定的空壳记录文件，无断言，不跑守卫）
 // B11-A:单步阶段的 description 以该步 summary 为正本(消除双写漂移)
 const summaryOf = (id: string) => steps.find((s) => s.id === id)?.summary ?? '';
 

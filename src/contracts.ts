@@ -4,7 +4,6 @@ import type {
 } from 'skillnomad';
 
 /**
-/**
  * **modules —— 内容模块（9 条）**
  *
  * 静态资产路径，构建期已知；路径只是**渲染载体**，改路径 = 打包期重定向，零语义影响。
@@ -14,7 +13,8 @@ import type {
  * - **移除 4 条**：protocolScheduling / pipelineParams / subagentBudget / schedulingDetail
  *   已随 8.13/8.14 下沉到 `meta.schedulingPolicy`，步骤不再引用（零处引用，非行为变更）。
  * - **收编 1 条**：`assets/00-intent-anchor/schemas.md` 原为裸路径字面量（intent-anchor.ts），
- *   逃逸在注册表外；收编为 `intentAnchorSchemas`（description 保持原字面量，确保产物零 diff）。
+ *   逃逸在注册表外；8.16 起已挂到产物实体名下（`entities.ts` anchors 条目的 `schema` 字段），
+ *   不再是独立模块（description 保持原字面量，确保产物零 diff）。
  */
 export const modules = {
   refSources: { path: 'assets/common/ref-sources.md', description: 'T0 域名表 + 反爬域名表 + 信源分级规则', required: true },
