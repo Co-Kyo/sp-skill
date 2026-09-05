@@ -9,8 +9,7 @@ import {
   stepFormat,
   workerTask,
 } from '../domain/ladder.js';
-import { modules } from '../contracts.js';
-import { refOf, schemaRef } from '../domain/entities.js';
+import { refOf } from '../domain/entities.js';
 
 import { barrier } from '../policies.js';
 import { fail, verify } from '../verify.js';
