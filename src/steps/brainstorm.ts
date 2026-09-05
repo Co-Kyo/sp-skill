@@ -25,8 +25,6 @@ export const brainstorm = step('brainstorm', '头脑风暴')
   .section('质量门禁', brainstormRules.qualityGateSection())
   .section('{{step:scan}} 注入', brainstormRules.scanInjectSection())
   // 8.5 迁移：contractRefs 收拢进 reads + as:'contract'，本方法已从 beta.4 类型删除。
-  // 8.13/8.14 已落地：schedulingDetail/protocolScheduling/pipelineParams/subagentBudget 为调度策略，
-  // 已下沉到 meta.schedulingPolicy（skill 级全局口径），本步不再登记。
   .taskTemplate(
     '场景维度',
     brainstormRules.scenarioTask(),
